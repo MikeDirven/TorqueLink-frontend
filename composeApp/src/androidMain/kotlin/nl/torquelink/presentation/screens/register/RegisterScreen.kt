@@ -1,4 +1,4 @@
-package nl.torquelink.presentation.screens.login
+package nl.torquelink.presentation.screens.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -25,11 +25,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nl.torquelink.presentation.language.interfaces.Language
 import nl.torquelink.presentation.language.useLanguage
 import nl.torquelink.presentation.screens.login.components.LoginFields
+import nl.torquelink.presentation.screens.register.components.RegisterFields
 import nl.torquelink.presentation.theme.TorqueLinkTheme
 import org.jetbrains.compose.resources.painterResource
 import torquelink.composeapp.generated.resources.Res
@@ -39,9 +39,9 @@ import torquelink.composeapp.generated.resources.text_logo
 import torquelink.composeapp.generated.resources.text_logo_dark
 
 @Composable
-fun LoginScreen(
-    state: LoginScreenState,
-    onEvent: (LoginScreenEvents) -> Unit,
+fun RegisterScreen(
+    state: RegisterScreenState,
+    onEvent: (RegisterScreenEvents) -> Unit,
     windowSizeClass: WindowWidthSizeClass,
     modifier: Modifier = Modifier,
     language: Language = useLanguage()
@@ -75,15 +75,19 @@ fun LoginScreen(
                             contentDescription = null
                         )
 
-                        LoginFields(
+                        RegisterFields(
                             modifier = Modifier.fillMaxWidth(0.9f),
                             usernameValue = state.usernameInput,
                             passwordValue = state.passwordInput,
+                            emailValue = state.emailInput,
                             onUsernameChange = { input, error ->
-                                onEvent(LoginScreenEvents.UsernameInputChanged(input, error))
+                                onEvent(RegisterScreenEvents.UsernameInputChanged(input, error))
                             },
                             onPasswordChange = { input, error ->
-                                onEvent(LoginScreenEvents.PasswordInputChanged(input, error))
+                                onEvent(RegisterScreenEvents.PasswordInputChanged(input, error))
+                            },
+                            onEmailChange = { input, error ->
+                                onEvent(RegisterScreenEvents.EmailInputChanged(input, error))
                             }
                         )
 
@@ -91,15 +95,18 @@ fun LoginScreen(
                             modifier = Modifier.fillMaxWidth(0.9f),
                             onClick = {},
                             enabled = !state.hasError
+
                         ) {
-                            Text(language.login.loginButton)
+                            Text(language.register.registerButton)
                         }
 
-                        TextButton(
+                        OutlinedButton(
                             modifier = Modifier.fillMaxWidth(fraction = 0.9f),
-                            onClick = {}
+                            onClick = {
+                                onEvent(RegisterScreenEvents.OnCancelPressed)
+                            }
                         ) {
-                            Text(language.login.forgottenPasswordButtons)
+                            Text(language.generic.cancelButton)
                         }
                     }
 
@@ -108,15 +115,6 @@ fun LoginScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
                     ) {
-                        OutlinedButton(
-                            modifier = Modifier.fillMaxWidth(fraction = 0.9f),
-                            onClick = {
-                                onEvent(LoginScreenEvents.OnCreateAccountPressed)
-                            }
-                        ) {
-                            Text(language.login.createAccountButton)
-                        }
-
                         Image(
                             modifier = Modifier.padding(bottom = 10.dp),
                             painter = painterResource(
@@ -177,15 +175,19 @@ fun LoginScreen(
                             }
 
 
-                            LoginFields(
+                            RegisterFields(
                                 modifier = Modifier.weight(1f),
                                 usernameValue = state.usernameInput,
                                 passwordValue = state.passwordInput,
+                                emailValue = state.emailInput,
                                 onUsernameChange = { input, error ->
-                                    onEvent(LoginScreenEvents.UsernameInputChanged(input, error))
+                                    onEvent(RegisterScreenEvents.UsernameInputChanged(input, error))
                                 },
                                 onPasswordChange = { input, error ->
-                                    onEvent(LoginScreenEvents.PasswordInputChanged(input, error))
+                                    onEvent(RegisterScreenEvents.PasswordInputChanged(input, error))
+                                },
+                                onEmailChange = { input, error ->
+                                    onEvent(RegisterScreenEvents.EmailInputChanged(input, error))
                                 }
                             )
                         }
@@ -205,26 +207,18 @@ fun LoginScreen(
                             OutlinedButton(
                                 modifier = Modifier.weight(0.5f),
                                 onClick = {
-                                    onEvent(LoginScreenEvents.OnCreateAccountPressed)
+                                    onEvent(RegisterScreenEvents.OnCancelPressed)
                                 }
                             ) {
-                                Text(language.login.createAccountButton)
+                                Text(language.generic.cancelButton)
                             }
 
                             Button(
                                 modifier = Modifier.weight(0.5f),
-                                onClick = {},
-                                enabled = !state.hasError
+                                onClick = {}
                             ) {
-                                Text(language.login.loginButton)
+                                Text(language.register.registerButton)
                             }
-                        }
-
-                        TextButton(
-                            modifier = Modifier.fillMaxWidth(fraction = 0.9f),
-                            onClick = {}
-                        ) {
-                            Text(language.login.forgottenPasswordButtons)
                         }
                     }
                 }
@@ -237,10 +231,10 @@ fun LoginScreen(
 @Composable
 fun LoginScreenPreviewCompact() {
     TorqueLinkTheme {
-        val viewmodel: LoginScreenViewModel = viewModel()
-        LoginScreen(
-            state = viewmodel.state.collectAsStateWithLifecycle().value,
-            onEvent = viewmodel::dispatch,
+        val viewmodel: RegisterScreenViewModel = viewModel()
+        RegisterScreen(
+            state = RegisterScreenState(),
+            onEvent = {},
             windowSizeClass = WindowWidthSizeClass.Compact
         )
     }
@@ -250,10 +244,10 @@ fun LoginScreenPreviewCompact() {
 @Composable
 fun LoginScreenPreviewMedium() {
     TorqueLinkTheme {
-        val viewmodel: LoginScreenViewModel = viewModel()
-        LoginScreen(
-            state = viewmodel.state.collectAsStateWithLifecycle().value,
-            onEvent = viewmodel::dispatch,
+//        val viewmodel: RegisterScreenViewModel = viewModel()
+        RegisterScreen(
+            state = RegisterScreenState(),
+            onEvent = {},
             windowSizeClass = WindowWidthSizeClass.Medium
         )
     }

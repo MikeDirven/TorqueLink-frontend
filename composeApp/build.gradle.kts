@@ -1,37 +1,41 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.google.ksp)
+    alias(libs.plugins.ktorfit)
+    alias(libs.plugins.google.mobile.services)
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
     
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "ComposeApp"
-            isStatic = true
-        }
-    }
+//    listOf(
+//        iosX64(),
+//        iosArm64(),
+//        iosSimulatorArm64()
+//    ).forEach { iosTarget ->
+//        iosTarget.binaries.framework {
+//            baseName = "ComposeApp"
+//            isStatic = true
+//        }
+//    }
     
     jvm("desktop")
-    
+
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         moduleName = "composeApp"
@@ -51,23 +55,55 @@ kotlin {
         }
         binaries.executable()
     }
-    
+
     sourceSets {
         val desktopMain by getting
         
         androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(compose.uiTooling)
-            implementation(libs.androidx.navigation.compose)
-            implementation(libs.androidx.material.window.size)
-            implementation(libs.androidx.material.adaptive)
-            implementation(libs.androidx.material.adaptive.layout)
-            implementation(libs.androidx.material.adaptive.navigation)
+            // shared
+            implementation(libs.torquelink.shared)
+
+            // android core
+            implementation(libs.androidx.core.ktx)
+            implementation(libs.androidx.core.splashscreen)
+            implementation(libs.androidx.material3.window.size.android)
+
+            // lifecycle
+            implementation(libs.androidx.lifecycle.runtime.ktx)
+            implementation(libs.androidx.lifecycle.compose)
+
+            // compose
+            implementation(project.dependencies.platform(libs.androidx.compose.bom))
             implementation(libs.androidx.activity.compose)
+            implementation(libs.androidx.ui)
+            implementation(libs.androidx.ui.graphics)
+            implementation(libs.androidx.ui.tooling.preview)
+            implementation(libs.androidx.material3)
+            implementation(libs.androidx.material.icons)
+
+            // koin
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.bundles.koin.compose)
+
+            //navigation
+            implementation(libs.androidx.compose.navigation)
+
+            // serialization
+            implementation(libs.kotlinx.serialization.json)
+
+            // datastore
             implementation(libs.androidx.datastore)
 
-            // Shared
-            implementation(libs.torquelink.shared)
+            //ktor
+            implementation(libs.bundles.ktor)
+
+            // google
+            implementation(libs.google.accompanist.permissions)
+            implementation(project.dependencies.platform(libs.google.firebase.bom))
+            implementation(libs.google.firebase.analytics)
+            implementation(libs.google.firebase.crashlytics)
+
+            implementation(libs.coil.compose)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -79,6 +115,12 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
             implementation(libs.androidx.lifecycle.runtime.compose)
+
+            // serialization
+            implementation(libs.kotlinx.serialization.json)
+
+            // shared
+            implementation(libs.torquelink.shared)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -87,20 +129,33 @@ kotlin {
     }
 }
 
+configurations.all {
+    exclude("jakarta.validation", "jakarta.validation-api")
+}
+
 android {
     namespace = "nl.torquelink"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "nl.torquelink"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        minSdk = 29
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/{LICENSE-notice.md,INDEX.LIST,LGPL-3.0.txt,ASL-2.0.txt,AL2.0,LGPL2.1,DEPENDENCIES,LICENSE.md,NOTICE.md}"
+            excludes += "draftv4/schema"
+            excludes += "draftv3/schema"
         }
     }
     buildTypes {
@@ -112,6 +167,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
+}
+dependencies {
+    debugImplementation(libs.ui.tooling)
 }
 
 compose.desktop {

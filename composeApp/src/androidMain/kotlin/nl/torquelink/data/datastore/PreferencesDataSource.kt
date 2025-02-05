@@ -1,4 +1,4 @@
-package nl.torquelink.data
+package nl.torquelink.data.datastore
 
 import android.util.Log
 import androidx.datastore.core.DataStore
@@ -8,30 +8,14 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
 import nl.torquelink.shared.models.auth.AuthenticationResponses
 import java.io.IOException
 
 class PreferencesDataSource(
     private val dataStore: DataStore<Preferences>
 )  {
-    suspend fun getDeviceSerial(): String? {
-        return try {
-            dataStore.data.first()[DEVICE_SERIAL]
-        } catch (e: IOException) {
-            null
-        }
-    }
-
-    suspend fun saveDeviceSerial(serial: String) {
-        dataStore.edit { preferences ->
-            preferences[DEVICE_SERIAL] = serial
-        }
-    }
-
     private val sessionAccessTokenFlow: Flow<String?> = dataStore.data.catch {
         if (it is IOException) {
             Log.e(TAG, "Error reading access token", it)
@@ -48,15 +32,6 @@ class PreferencesDataSource(
         } else throw it
     }.map { preferences ->
         preferences[SESSION_REFRESH_TOKEN]?.ifBlank { null }
-    }
-
-    val sessionTokenInformationFlow: Flow<AuthenticationResponses.AuthenticationResponseDefault?> = combine(sessionAccessTokenFlow, sessionRefreshTokenFlow) { accesTtoken, refreshToken ->
-        if (accesTtoken != null && refreshToken != null) {
-            AuthenticationResponses.AuthenticationResponseDefault(
-                accessToken = accesTtoken,
-                refreshToken = refreshToken
-            )
-        } else null
     }
 
     suspend fun getSessionAccessToken(): String? {
@@ -80,28 +55,6 @@ class PreferencesDataSource(
             dataStore.data.first()[REMEMBER_TOKEN]?.ifBlank { null }
         } catch (e: IOException) {
             null
-        }
-    }
-
-    fun getTokenInfo(): AuthenticationResponses? = runBlocking {
-        Log.d(TAG, "Getting token info")
-        try {
-            val accessToken = getSessionAccessToken() ?: return@runBlocking null
-            val refreshToken = getSessionRefreshToken() ?: return@runBlocking null
-            val rememberToken = getRememberToken()
-
-            return@runBlocking rememberToken?.let {
-                AuthenticationResponses.AuthenticationResponseWithRemember(
-                    accessToken = accessToken,
-                    refreshToken = refreshToken,
-                    rememberToken = rememberToken
-                )
-            } ?: AuthenticationResponses.AuthenticationResponseDefault(
-                accessToken = accessToken,
-                refreshToken = refreshToken
-            )
-        } catch (e: IOException) {
-            return@runBlocking null
         }
     }
 

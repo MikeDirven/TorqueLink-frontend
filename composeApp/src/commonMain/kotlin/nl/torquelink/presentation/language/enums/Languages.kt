@@ -1,7 +1,7 @@
 package nl.torquelink.presentation.language.enums
 
 import nl.torquelink.presentation.language.interfaces.Language
-import nl.torquelink.presentation.language.mappings.DutchMapping
+import nl.torquelink.presentation.language.mappings.dutch.DutchMapping
 
 enum class Languages(
     val languageCode: String,

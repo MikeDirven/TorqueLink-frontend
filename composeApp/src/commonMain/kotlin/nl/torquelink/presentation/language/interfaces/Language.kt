@@ -1,9 +1,13 @@
 package nl.torquelink.presentation.language.interfaces
 
 import nl.torquelink.presentation.language.enums.Languages
+import nl.torquelink.presentation.language.interfaces.sub.Generic
 import nl.torquelink.presentation.language.interfaces.sub.Login
+import nl.torquelink.presentation.language.interfaces.sub.Register
 
 interface Language {
     val locale: Languages
-    val loginScreen: Login
+    val generic: Generic
+    val login: Login
+    val register: Register
 }

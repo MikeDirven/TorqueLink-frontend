@@ -1,4 +1,4 @@
-package nl.torquelink.data
+package nl.torquelink.data.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore

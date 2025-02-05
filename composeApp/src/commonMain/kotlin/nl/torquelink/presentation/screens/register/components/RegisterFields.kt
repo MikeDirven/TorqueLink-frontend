@@ -1,4 +1,4 @@
-package nl.torquelink.presentation.screens.login.components
+package nl.torquelink.presentation.screens.register.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,16 +21,19 @@ import nl.torquelink.presentation.language.interfaces.Language
 import nl.torquelink.presentation.language.useLanguage
 
 @Composable
-fun LoginFields(
+fun RegisterFields(
     modifier: Modifier = Modifier,
     usernameValue: String,
     passwordValue: String,
+    emailValue: String,
     onUsernameChange: (input: String, error: Boolean) -> Unit,
     onPasswordChange: (input: String, error: Boolean) -> Unit,
+    onEmailChange: (input: String, error: Boolean) -> Unit,
     language: Language = useLanguage()
 ) {
     var userInputException by remember { mutableStateOf<String?>(null) }
     var passwordInputException by remember { mutableStateOf<String?>(null) }
+    var emailInputException by remember { mutableStateOf<String?>(null) }
 
     fun checkUsername(input: String) {
         val userInputCheck = input.isBlank()
@@ -48,6 +51,26 @@ fun LoginFields(
         }
 
         onPasswordChange(input, passwordInputCheck)
+    }
+
+    fun isValidEmail(email: String): Boolean {
+        val emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+        val pattern = Regex(emailRegex)
+        val matcher = pattern.matchEntire(email)
+        return matcher != null
+    }
+
+    fun checkEmail(input: String) {
+        val emailInputCheck = input.isBlank()
+        val emailValid = isValidEmail(input)
+        if(emailInputCheck) {
+            emailInputException = language.generic.emptyEmailInput
+        }
+        if(!emailValid) {
+            emailInputException = language.generic.emailNotValid
+        }
+
+        onEmailChange(input, emailInputCheck || emailValid)
     }
 
     Column(
@@ -69,7 +92,7 @@ fun LoginFields(
             onValueChange = {
                 checkUsername(it)
             },
-            label = { Text(language.generic.userAndEmailFieldLabel) }
+            label = { Text(language.generic.userFieldLabel) }
         )
 
         OutlinedTextField(
@@ -84,13 +107,33 @@ fun LoginFields(
             value = passwordValue,
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done,
+                imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Password
             ),
             onValueChange = {
                 checkPassword(it)
             },
             label = { Text(language.generic.passwordFieldLabel) }
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            isError = !emailInputException.isNullOrBlank(),
+            supportingText = {
+                if(!emailInputException.isNullOrBlank()) {
+                    Text(emailInputException!!)
+                }
+            },
+            singleLine = true,
+            value = emailValue,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Password
+            ),
+            onValueChange = {
+                checkEmail(it)
+            },
+            label = { Text(language.generic.emailFieldLabel) }
         )
     }
 }

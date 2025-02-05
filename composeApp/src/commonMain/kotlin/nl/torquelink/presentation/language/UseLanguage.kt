@@ -6,7 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import nl.torquelink.presentation.language.enums.Languages
 import nl.torquelink.presentation.language.interfaces.Language
-import nl.torquelink.presentation.language.mappings.DutchMapping
+import nl.torquelink.presentation.language.mappings.dutch.DutchMapping
 
 @Composable
 fun useLanguage(

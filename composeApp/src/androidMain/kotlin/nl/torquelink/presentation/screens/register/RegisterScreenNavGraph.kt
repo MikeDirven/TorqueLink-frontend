@@ -1,4 +1,4 @@
-package nl.torquelink.presentation.screens.login
+package nl.torquelink.presentation.screens.register
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -10,14 +10,14 @@ import androidx.navigation.compose.composable
 import nl.torquelink.presentation.navigation.Destinations
 import org.koin.androidx.compose.koinViewModel
 
-fun NavGraphBuilder.loginScreenNavGraph(
+fun NavGraphBuilder.registerScreenNavGraph(
     windowSizeClass: WindowWidthSizeClass
 ) {
-    composable<Destinations.LoginDestination> {
-        val viewModel: LoginScreenViewModel = koinViewModel()
+    composable<Destinations.RegisterDestination> {
+        val viewModel: RegisterScreenViewModel = koinViewModel()
         val viewModelState by viewModel.state.collectAsStateWithLifecycle()
 
-        LoginScreen(
+        RegisterScreen(
             state = viewModelState,
             onEvent = viewModel::dispatch,
             windowSizeClass = windowSizeClass,
