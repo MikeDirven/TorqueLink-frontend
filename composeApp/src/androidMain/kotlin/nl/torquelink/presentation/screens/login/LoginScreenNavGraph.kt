@@ -7,13 +7,18 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import nl.torquelink.presentation.navigation.Destinations
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.loginScreenNavGraph(
     windowSizeClass: WindowWidthSizeClass
 ) {
-    composable<Destinations.LoginDestination> {
+    composable<Destinations.LoginDestination>(
+        deepLinks = listOf(
+            navDeepLink { uriPattern = "http://torquelink.nl" }
+        )
+    ) {
         val viewModel: LoginScreenViewModel = koinViewModel()
         val viewModelState by viewModel.state.collectAsStateWithLifecycle()
 
