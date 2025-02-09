@@ -34,28 +34,48 @@ fun RegisterFields(
     var userInputException by remember { mutableStateOf<String?>(null) }
     var passwordInputException by remember { mutableStateOf<String?>(null) }
     var emailInputException by remember { mutableStateOf<String?>(null) }
+    val hasErrors = when {
+        userInputException != null -> true
+        passwordInputException != null -> true
+        emailInputException != null -> true
+        else -> false
+    }
+    val hasEmptyFields = when {
+        usernameValue.isBlank() -> true
+        passwordValue.isBlank() -> true
+        emailValue.isBlank() -> true
+        else -> false
+    }
 
     fun checkUsername(input: String) {
         val userInputCheck = input.isBlank()
-        if(userInputCheck) {
-            userInputException = language.generic.emptyUserInput
+        userInputException = if(userInputCheck) {
+            language.generic.emptyUserInput
+        } else {
+            null
         }
 
-        onUsernameChange(input, userInputCheck)
+        onUsernameChange(input, userInputCheck || hasErrors || hasEmptyFields)
     }
 
     fun checkPassword(input: String) {
         val passwordInputCheck = input.isBlank()
-        if(passwordInputCheck) {
-            passwordInputException = language.generic.emptyPasswordInput
+        val passwordLengthCheck = input.length < 8
+        passwordInputException = when {
+            passwordInputCheck -> {
+                language.generic.emptyPasswordInput
+            }
+            passwordLengthCheck -> {
+                language.generic.passwordToShort
+            }
+            else -> null
         }
 
-        onPasswordChange(input, passwordInputCheck)
+        onPasswordChange(input, passwordInputCheck || passwordLengthCheck || hasErrors || hasEmptyFields)
     }
 
     fun isValidEmail(email: String): Boolean {
-        val emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
-        val pattern = Regex(emailRegex)
+        val pattern = Regex("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}\$")
         val matcher = pattern.matchEntire(email)
         return matcher != null
     }
@@ -69,8 +89,11 @@ fun RegisterFields(
         if(!emailValid) {
             emailInputException = language.generic.emailNotValid
         }
+        if(!emailInputCheck && emailValid) {
+            emailInputException = null
+        }
 
-        onEmailChange(input, emailInputCheck || emailValid)
+        onEmailChange(input, emailInputCheck || !emailValid || hasErrors || hasEmptyFields)
     }
 
     Column(

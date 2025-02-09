@@ -13,13 +13,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
@@ -43,10 +46,14 @@ fun LoginScreen(
     state: LoginScreenState,
     onEvent: (LoginScreenEvents) -> Unit,
     windowSizeClass: WindowWidthSizeClass,
+    snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     modifier: Modifier = Modifier,
     language: Language = useLanguage()
 ) {
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackBarHostState)
+        },
         contentWindowInsets = WindowInsets.safeContent,
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
@@ -77,7 +84,7 @@ fun LoginScreen(
 
                         LoginFields(
                             modifier = Modifier.fillMaxWidth(0.9f),
-                            usernameValue = state.usernameInput,
+                            usernameValue = state.userInput,
                             passwordValue = state.passwordInput,
                             onUsernameChange = { input, error ->
                                 onEvent(LoginScreenEvents.UsernameInputChanged(input, error))
@@ -179,7 +186,7 @@ fun LoginScreen(
 
                             LoginFields(
                                 modifier = Modifier.weight(1f),
-                                usernameValue = state.usernameInput,
+                                usernameValue = state.userInput,
                                 passwordValue = state.passwordInput,
                                 onUsernameChange = { input, error ->
                                     onEvent(LoginScreenEvents.UsernameInputChanged(input, error))

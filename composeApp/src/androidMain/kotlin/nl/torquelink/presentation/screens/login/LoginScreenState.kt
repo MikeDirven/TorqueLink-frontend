@@ -2,6 +2,6 @@ package nl.torquelink.presentation.screens.login
 
 data class LoginScreenState(
     val hasError: Boolean = false,
-    val usernameInput: String = "",
+    val userInput: String = "",
     val passwordInput: String = ""
 )

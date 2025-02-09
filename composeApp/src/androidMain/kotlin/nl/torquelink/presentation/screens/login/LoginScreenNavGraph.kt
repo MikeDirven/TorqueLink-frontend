@@ -1,6 +1,7 @@
 package nl.torquelink.presentation.screens.login
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -12,7 +13,8 @@ import nl.torquelink.presentation.navigation.Destinations
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.loginScreenNavGraph(
-    windowSizeClass: WindowWidthSizeClass
+    windowSizeClass: WindowWidthSizeClass,
+    snackBarHostState: SnackbarHostState
 ) {
     composable<Destinations.LoginDestination>(
         deepLinks = listOf(
@@ -26,6 +28,7 @@ fun NavGraphBuilder.loginScreenNavGraph(
             state = viewModelState,
             onEvent = viewModel::dispatch,
             windowSizeClass = windowSizeClass,
+            snackBarHostState = snackBarHostState,
             modifier = Modifier
                 .fillMaxSize()
         )

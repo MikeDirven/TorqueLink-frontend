@@ -1,6 +1,7 @@
 package nl.torquelink.presentation.screens.register
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -12,7 +13,8 @@ import nl.torquelink.presentation.navigation.Destinations
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.registerScreenNavGraph(
-    windowSizeClass: WindowWidthSizeClass
+    windowSizeClass: WindowWidthSizeClass,
+    snackBarHostState: SnackbarHostState
 ) {
     composable<Destinations.RegisterDestination>(
         deepLinks = listOf(
@@ -26,6 +28,7 @@ fun NavGraphBuilder.registerScreenNavGraph(
             state = viewModelState,
             onEvent = viewModel::dispatch,
             windowSizeClass = windowSizeClass,
+            snackBarHosState = snackBarHostState,
             modifier = Modifier
                 .fillMaxSize()
         )

@@ -8,4 +8,5 @@ sealed interface RegisterScreenEvents {
     data class EmailInputChanged(val input: String, val error: Boolean) : RegisterScreenEvents
 
     data object OnCancelPressed: RegisterScreenEvents
+    data object OnRegisterPressed: RegisterScreenEvents
 }

@@ -16,10 +16,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
@@ -43,10 +46,14 @@ fun RegisterScreen(
     state: RegisterScreenState,
     onEvent: (RegisterScreenEvents) -> Unit,
     windowSizeClass: WindowWidthSizeClass,
+    snackBarHosState: SnackbarHostState = remember { SnackbarHostState() },
     modifier: Modifier = Modifier,
     language: Language = useLanguage()
 ) {
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackBarHosState)
+        },
         contentWindowInsets = WindowInsets.safeContent,
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
@@ -93,7 +100,9 @@ fun RegisterScreen(
 
                         Button(
                             modifier = Modifier.fillMaxWidth(0.9f),
-                            onClick = {},
+                            onClick = {
+                                onEvent(RegisterScreenEvents.OnRegisterPressed)
+                            },
                             enabled = !state.hasError
 
                         ) {

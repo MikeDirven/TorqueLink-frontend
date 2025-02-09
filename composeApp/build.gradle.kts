@@ -18,7 +18,7 @@ plugins {
 kotlin {
     androidTarget {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
     
@@ -94,8 +94,12 @@ kotlin {
             // datastore
             implementation(libs.androidx.datastore)
 
+//            //Logback
+            implementation(libs.logback.classic)
+
             //ktor
             implementation(libs.bundles.ktor)
+            implementation(libs.ktor.client.android)
 
             // google
             implementation(libs.google.accompanist.permissions)
@@ -116,12 +120,19 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel.compose)
             implementation(libs.androidx.lifecycle.runtime.compose)
 
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.core)
+
             // serialization
             implementation(libs.kotlinx.serialization.json)
 
             // shared
             implementation(libs.torquelink.shared)
+
+            // ktor
+            implementation(libs.bundles.ktor)
         }
+
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
@@ -153,7 +164,7 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{LICENSE-notice.md,INDEX.LIST,LGPL-3.0.txt,ASL-2.0.txt,AL2.0,LGPL2.1,DEPENDENCIES,LICENSE.md,NOTICE.md}"
+            merges += "/META-INF/{LICENSE-notice.md,INDEX.LIST,LGPL-3.0.txt,ASL-2.0.txt,AL2.0,LGPL2.1,DEPENDENCIES,LICENSE.md,NOTICE.md}"
             excludes += "draftv4/schema"
             excludes += "draftv3/schema"
         }
@@ -164,8 +175,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
@@ -188,5 +199,11 @@ compose.desktop {
             packageName = "nl.torquelink"
             packageVersion = "1.0.0"
         }
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("ch.qos.logback:logback-classic:1.3.15")
     }
 }

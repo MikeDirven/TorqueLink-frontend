@@ -13,6 +13,7 @@ object GenericMapping : Generic {
 
     override val emptyUserInput: String = "Gebruikersnaam of email mag niet leeg zijn."
     override val emptyPasswordInput: String = "Wachtwoord mag niet leeg zijn."
+    override val passwordToShort: String = "Wachtwoord moet langer zijn dan 8 tekens."
     override val emptyEmailInput: String = "Email mag niet leeg zijn."
     override val emailNotValid: String = "Email is niet geldig."
 
