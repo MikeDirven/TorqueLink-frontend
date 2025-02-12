@@ -1,6 +1,7 @@
 package nl.torquelink.data.network.client
 
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.resources.Resources
@@ -23,6 +24,11 @@ val httpClient = HttpClient {
                 }
             }
         )
+    }
+    install(HttpTimeout) {
+        requestTimeoutMillis = 15000L
+        connectTimeoutMillis = 15000L
+        socketTimeoutMillis = 15000L
     }
 
     defaultRequest {

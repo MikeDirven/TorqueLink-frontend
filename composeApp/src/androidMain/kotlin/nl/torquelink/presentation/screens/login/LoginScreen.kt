@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +51,10 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     language: Language = useLanguage()
 ) {
+    LaunchedEffect(Unit) {
+        onEvent(LoginScreenEvents.TryLoginWithRememberToken)
+    }
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)
@@ -96,7 +101,9 @@ fun LoginScreen(
 
                         Button(
                             modifier = Modifier.fillMaxWidth(0.9f),
-                            onClick = {},
+                            onClick = {
+                                onEvent(LoginScreenEvents.OnLoginButtonPressed)
+                            },
                             enabled = !state.hasError
                         ) {
                             Text(language.login.loginButton)

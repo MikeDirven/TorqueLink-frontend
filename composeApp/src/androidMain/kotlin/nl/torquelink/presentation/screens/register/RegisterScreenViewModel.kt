@@ -74,10 +74,17 @@ class RegisterScreenViewModel(
                                 }
                             }
                         }
-                        is ErrorResult -> {
+                        is ErrorResult.Error -> {
                             snackBarController.create(
                                 SnackBar(
-                                    "Registration Failed!"
+                                    response.exception.localizedMessage
+                                )
+                            )
+                        }
+                        else -> {
+                            snackBarController.create(
+                                SnackBar(
+                                    "Something went wrong"
                                 )
                             )
                         }
