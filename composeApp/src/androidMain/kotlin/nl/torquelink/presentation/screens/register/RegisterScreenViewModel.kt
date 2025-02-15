@@ -42,13 +42,7 @@ class RegisterScreenViewModel(
             }
             is RegisterScreenEvents.OnCancelPressed -> {
                 viewModelScope.launch {
-                    navigator.navigate(
-                        Destinations.LoginDestination
-                    ){
-                        popUpTo(0){
-                            inclusive = true
-                        }
-                    }
+                    navigator.navigateUp()
                 }
             }
             is RegisterScreenEvents.OnRegisterPressed -> {

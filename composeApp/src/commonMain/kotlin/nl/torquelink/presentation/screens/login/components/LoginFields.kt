@@ -31,23 +31,37 @@ fun LoginFields(
 ) {
     var userInputException by remember { mutableStateOf<String?>(null) }
     var passwordInputException by remember { mutableStateOf<String?>(null) }
+    val hasErrors = when {
+        userInputException != null -> true
+        passwordInputException != null -> true
+        else -> null
+    }
+    val isEmpty = when {
+        usernameValue.isEmpty() -> true
+        passwordValue.isEmpty() -> true
+        else -> null
+    }
 
     fun checkUsername(input: String) {
         val userInputCheck = input.isBlank()
         if(userInputCheck) {
             userInputException = language.generic.emptyUserInput
+        } else {
+            userInputException = null
         }
 
-        onUsernameChange(input, userInputCheck)
+        onUsernameChange(input, hasErrors ?: isEmpty ?: userInputCheck)
     }
 
     fun checkPassword(input: String) {
         val passwordInputCheck = input.isBlank()
         if(passwordInputCheck) {
             passwordInputException = language.generic.emptyPasswordInput
+        } else {
+            passwordInputException = null
         }
 
-        onPasswordChange(input, passwordInputCheck)
+        onPasswordChange(input, hasErrors ?: isEmpty ?: passwordInputCheck)
     }
 
     Column(

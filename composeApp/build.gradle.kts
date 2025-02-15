@@ -107,7 +107,8 @@ kotlin {
             implementation(libs.google.firebase.analytics)
             implementation(libs.google.firebase.crashlytics)
 
-            implementation(libs.coil.compose)
+            // coil
+            implementation(libs.bundles.coil.compose)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

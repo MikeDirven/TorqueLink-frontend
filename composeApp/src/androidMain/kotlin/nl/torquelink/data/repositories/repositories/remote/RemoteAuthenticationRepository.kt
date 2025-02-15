@@ -8,6 +8,7 @@ import nl.torquelink.domain.repositories.AuthenticationRepository
 import nl.torquelink.shared.models.auth.AuthenticationResponses
 import nl.torquelink.shared.models.auth.LoginRequests
 import nl.torquelink.shared.models.auth.RegistrationRequests
+import nl.torquelink.shared.models.auth.ResetPasswordRequests
 
 class RemoteAuthenticationRepository(
     private val preferencesDataSource: PreferencesDataSource,
@@ -15,11 +16,6 @@ class RemoteAuthenticationRepository(
 ) : AuthenticationRepository {
     override suspend fun loginByUsername(username: String, password: String): Result<AuthenticationResponses> {
         return try {
-            // Check inputs
-            when {
-                username.isBlank() -> return ErrorResult.Error(Exception("Username cannot be blank"))
-                password.isBlank() -> return ErrorResult.Error(Exception("Password cannot be blank"))
-            }
             torqueLinkApi.authenticationApi.login(
                 LoginRequests.UsernameLoginRequest(
                     username = username,
@@ -34,11 +30,6 @@ class RemoteAuthenticationRepository(
 
     override suspend fun loginByEmail(email: String, password: String): Result<AuthenticationResponses> {
         return try {
-            // Check inputs
-            when {
-                email.isBlank() -> return ErrorResult.Error(Exception("Email cannot be blank"))
-                password.isBlank() -> return ErrorResult.Error(Exception("Password cannot be blank"))
-            }
             torqueLinkApi.authenticationApi.login(
                 LoginRequests.EmailLoginRequest(
                     email = email,
@@ -68,17 +59,37 @@ class RemoteAuthenticationRepository(
 
     override suspend fun register(username: String, password: String, email: String): Result<Unit> {
         return try {
-            // Check inputs
-            when {
-                username.isBlank() -> return ErrorResult.Error(Exception("Username cannot be blank"))
-                password.isBlank() -> return ErrorResult.Error(Exception("Password cannot be blank"))
-                email.isBlank() -> return ErrorResult.Error(Exception("Email cannot be blank"))
-            }
             torqueLinkApi.authenticationApi.register(
                 RegistrationRequests.RegisterWithTorqueLinkDto(
                     username = username,
                     password = password,
                     email = email
+                )
+            )
+        } catch (e: Exception) {
+            return ErrorResult.Error(e)
+        }
+    }
+
+    override suspend fun requestPasswordReset(username: String, email: String): Result<Unit> {
+        return try {
+            torqueLinkApi.authenticationApi.requestPasswordReset(
+                ResetPasswordRequests.RequestPasswordReset(
+                    username = username,
+                    email = email
+                )
+            )
+        } catch (e: Exception) {
+            return ErrorResult.Error(e)
+        }
+    }
+
+    override suspend fun resetPassword(token: String, password: String): Result<Unit> {
+        return try {
+            torqueLinkApi.authenticationApi.requestPasswordReset(
+                ResetPasswordRequests.ResetPasswordWithTokenToken(
+                    token = token,
+                    newPassword = password
                 )
             )
         } catch (e: Exception) {

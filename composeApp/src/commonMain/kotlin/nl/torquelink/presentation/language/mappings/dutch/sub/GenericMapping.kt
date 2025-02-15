@@ -12,8 +12,14 @@ object GenericMapping : Generic {
     override val cancelButton: String = "Terug"
 
     override val emptyUserInput: String = "Gebruikersnaam of email mag niet leeg zijn."
+
+    override val passwordInvalid: String = "Invalid password."
     override val emptyPasswordInput: String = "Wachtwoord mag niet leeg zijn."
     override val passwordToShort: String = "Wachtwoord moet langer zijn dan 8 tekens."
+    override val passwordNeedsLowercaseCharacter: String = "Wachtwoord moet een kleine letter bevatten."
+    override val passwordNeedsUppercaseCharacter: String = "Wachtwoord moet een hoofdletter bevatten."
+    override val passwordNeedsSpecialCharacter: String = "Wachtwoord moet een speciaal teken bevatten."
+
     override val emptyEmailInput: String = "Email mag niet leeg zijn."
     override val emailNotValid: String = "Email is niet geldig."
 

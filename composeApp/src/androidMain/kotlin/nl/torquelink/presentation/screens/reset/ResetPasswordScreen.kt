@@ -1,4 +1,4 @@
-package nl.torquelink.presentation.screens.login
+package nl.torquelink.presentation.screens.reset
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -19,10 +19,8 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +31,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nl.torquelink.presentation.language.interfaces.Language
 import nl.torquelink.presentation.language.useLanguage
-import nl.torquelink.presentation.screens.login.components.LoginFields
 import nl.torquelink.presentation.theme.TorqueLinkTheme
 import org.jetbrains.compose.resources.painterResource
 import torquelink.composeapp.generated.resources.Res
@@ -43,18 +40,15 @@ import torquelink.composeapp.generated.resources.text_logo
 import torquelink.composeapp.generated.resources.text_logo_dark
 
 @Composable
-fun LoginScreen(
-    state: LoginScreenState,
-    onEvent: (LoginScreenEvents) -> Unit,
+fun ResetPasswordScreen(
+    state: ResetPasswordScreenState,
+    onEvent: (ResetPasswordScreenEvents) -> Unit,
     windowSizeClass: WindowWidthSizeClass,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     modifier: Modifier = Modifier,
-    language: Language = useLanguage()
+    language: Language = useLanguage(),
+    resetToken: String? = null
 ) {
-    LaunchedEffect(Unit) {
-        onEvent(LoginScreenEvents.TryLoginWithRememberToken)
-    }
-
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)
@@ -87,35 +81,44 @@ fun LoginScreen(
                             contentDescription = null
                         )
 
-                        LoginFields(
+                        ResetPasswordFields(
                             modifier = Modifier.fillMaxWidth(0.9f),
+                            hasToken = !resetToken.isNullOrBlank(),
                             usernameValue = state.userInput,
-                            passwordValue = state.passwordInput,
+                            emailValue = state.emailInput,
+                            newPasswordValue = state.newPasswordInput,
                             onUsernameChange = { input, error ->
-                                onEvent(LoginScreenEvents.UsernameInputChanged(input, error))
+                                onEvent(ResetPasswordScreenEvents.UsernameInputChanged(input, error))
                             },
-                            onPasswordChange = { input, error ->
-                                onEvent(LoginScreenEvents.PasswordInputChanged(input, error))
+                            onEmailChange = { input, error ->
+                                onEvent(ResetPasswordScreenEvents.EmailInputChanged(input, error))
+                            },
+                            onNewPasswordChange = { input, error ->
+                                onEvent(ResetPasswordScreenEvents.NewPasswordInputChanged(input, error))
                             }
                         )
 
                         Button(
                             modifier = Modifier.fillMaxWidth(0.9f),
                             onClick = {
-                                onEvent(LoginScreenEvents.OnLoginButtonPressed)
+                                if(!resetToken.isNullOrBlank()){
+                                    onEvent(ResetPasswordScreenEvents.OnResetPasswordPressed(resetToken))
+                                } else {
+                                    onEvent(ResetPasswordScreenEvents.OnResetPasswordRequestPressed)
+                                }
                             },
                             enabled = !state.hasError
                         ) {
-                            Text(language.login.loginButton)
+                            Text(language.resetPassword.resetPasswordButton)
                         }
 
-                        TextButton(
+                        OutlinedButton(
                             modifier = Modifier.fillMaxWidth(fraction = 0.9f),
                             onClick = {
-                                onEvent(LoginScreenEvents.OnForgotPasswordPressed)
+                                onEvent(ResetPasswordScreenEvents.OnCancelPressed)
                             }
                         ) {
-                            Text(language.login.forgottenPasswordButtons)
+                            Text(language.generic.cancelButton)
                         }
                     }
 
@@ -124,15 +127,6 @@ fun LoginScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
                     ) {
-                        OutlinedButton(
-                            modifier = Modifier.fillMaxWidth(fraction = 0.9f),
-                            onClick = {
-                                onEvent(LoginScreenEvents.OnCreateAccountPressed)
-                            }
-                        ) {
-                            Text(language.login.createAccountButton)
-                        }
-
                         Image(
                             modifier = Modifier.padding(bottom = 10.dp),
                             painter = painterResource(
@@ -193,56 +187,51 @@ fun LoginScreen(
                             }
 
 
-                            LoginFields(
+                            ResetPasswordFields(
                                 modifier = Modifier.weight(1f),
+                                hasToken = !resetToken.isNullOrBlank(),
                                 usernameValue = state.userInput,
-                                passwordValue = state.passwordInput,
+                                emailValue = state.emailInput,
+                                newPasswordValue = state.newPasswordInput,
                                 onUsernameChange = { input, error ->
-                                    onEvent(LoginScreenEvents.UsernameInputChanged(input, error))
+                                    onEvent(ResetPasswordScreenEvents.UsernameInputChanged(input, error))
                                 },
-                                onPasswordChange = { input, error ->
-                                    onEvent(LoginScreenEvents.PasswordInputChanged(input, error))
+                                onEmailChange = { input, error ->
+                                    onEvent(ResetPasswordScreenEvents.EmailInputChanged(input, error))
+                                },
+                                onNewPasswordChange = { input, error ->
+                                    onEvent(ResetPasswordScreenEvents.NewPasswordInputChanged(input, error))
                                 }
                             )
                         }
                     }
 
-
-                    Column(
+                    Row(
                         modifier = Modifier.padding(horizontal = 10.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top)
+                        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(
-                            modifier = Modifier,
-                            horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
-                            verticalAlignment = Alignment.CenterVertically
+                        OutlinedButton(
+                            modifier = Modifier.weight(0.5f),
+                            onClick = {
+                                onEvent(ResetPasswordScreenEvents.OnCancelPressed)
+                            }
                         ) {
-                            OutlinedButton(
-                                modifier = Modifier.weight(0.5f),
-                                onClick = {
-                                    onEvent(LoginScreenEvents.OnCreateAccountPressed)
-                                }
-                            ) {
-                                Text(language.login.createAccountButton)
-                            }
-
-                            Button(
-                                modifier = Modifier.weight(0.5f),
-                                onClick = {},
-                                enabled = !state.hasError
-                            ) {
-                                Text(language.login.loginButton)
-                            }
+                            Text(language.generic.cancelButton)
                         }
 
-                        TextButton(
-                            modifier = Modifier.fillMaxWidth(fraction = 0.9f),
+                        Button(
+                            modifier = Modifier.weight(0.5f),
                             onClick = {
-                                onEvent(LoginScreenEvents.OnForgotPasswordPressed)
-                            }
+                                if(!resetToken.isNullOrBlank()){
+                                    onEvent(ResetPasswordScreenEvents.OnResetPasswordPressed(resetToken))
+                                } else {
+                                    onEvent(ResetPasswordScreenEvents.OnResetPasswordRequestPressed)
+                                }
+                            },
+                            enabled = !state.hasError
                         ) {
-                            Text(language.login.forgottenPasswordButtons)
+                            Text(language.resetPassword.resetPasswordButton)
                         }
                     }
                 }
@@ -253,10 +242,10 @@ fun LoginScreen(
 
 @Preview(device = Devices.PIXEL_XL)
 @Composable
-fun LoginScreenPreviewCompact() {
+fun ResetPasswordScreenPreviewCompact() {
     TorqueLinkTheme {
-        val viewmodel: LoginScreenViewModel = viewModel()
-        LoginScreen(
+        val viewmodel: ResetPasswordScreenViewModel = viewModel()
+        ResetPasswordScreen(
             state = viewmodel.state.collectAsStateWithLifecycle().value,
             onEvent = viewmodel::dispatch,
             windowSizeClass = WindowWidthSizeClass.Compact
@@ -266,10 +255,10 @@ fun LoginScreenPreviewCompact() {
 
 @Preview(device = Devices.PIXEL_TABLET)
 @Composable
-fun LoginScreenPreviewMedium() {
+fun ResetPasswordScreenPreviewMedium() {
     TorqueLinkTheme {
-        val viewmodel: LoginScreenViewModel = viewModel()
-        LoginScreen(
+        val viewmodel: ResetPasswordScreenViewModel = viewModel()
+        ResetPasswordScreen(
             state = viewmodel.state.collectAsStateWithLifecycle().value,
             onEvent = viewmodel::dispatch,
             windowSizeClass = WindowWidthSizeClass.Medium

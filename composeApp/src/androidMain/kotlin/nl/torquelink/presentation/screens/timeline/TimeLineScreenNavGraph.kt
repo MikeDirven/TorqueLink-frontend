@@ -1,4 +1,4 @@
-package nl.torquelink.presentation.screens.login
+package nl.torquelink.presentation.screens.timeline
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
@@ -8,18 +8,20 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
+import androidx.navigation.toRoute
 import nl.torquelink.presentation.navigation.Destinations
 import org.koin.androidx.compose.koinViewModel
 
-fun NavGraphBuilder.loginScreenNavGraph(
+fun NavGraphBuilder.timeLineScreenNavGraph(
     windowSizeClass: WindowWidthSizeClass,
     snackBarHostState: SnackbarHostState
 ) {
-    composable<Destinations.LoginDestination> {
-        val viewModel: LoginScreenViewModel = koinViewModel()
+    composable<Destinations.TimeLine> {
+        val viewModel: TimeLineScreenViewModel = koinViewModel()
         val viewModelState by viewModel.state.collectAsStateWithLifecycle()
 
-        LoginScreen(
+        TimeLineScreen(
             state = viewModelState,
             onEvent = viewModel::dispatch,
             windowSizeClass = windowSizeClass,

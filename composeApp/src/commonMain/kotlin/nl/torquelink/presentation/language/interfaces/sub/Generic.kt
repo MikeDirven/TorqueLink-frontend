@@ -11,8 +11,14 @@ interface Generic {
 
     // Exceptions
     val emptyUserInput: String
+
+    val passwordInvalid: String
     val emptyPasswordInput: String
     val passwordToShort: String
+    val passwordNeedsLowercaseCharacter: String
+    val passwordNeedsUppercaseCharacter: String
+    val passwordNeedsSpecialCharacter: String
+
     val emptyEmailInput: String
     val emailNotValid: String
 }

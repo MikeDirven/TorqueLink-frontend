@@ -3,6 +3,7 @@ package nl.torquelink.data.repositories.repositories.local
 import nl.torquelink.data.datastore.PreferencesDataSource
 import nl.torquelink.domain.repositories.PreferencesRepository
 import nl.torquelink.shared.models.auth.AuthenticationResponses
+import nl.torquelink.shared.models.profile.UserProfiles
 
 class LocalPreferencesRepository(
     private val preferencesDataSource: PreferencesDataSource
@@ -17,6 +18,10 @@ class LocalPreferencesRepository(
 
     override suspend fun getRememberToken(): String? {
         return preferencesDataSource.getRememberToken()
+    }
+
+    override suspend fun getProfile(): UserProfiles.UserProfileWithSettingsDto? {
+        return preferencesDataSource.getProfile()
     }
 
     override suspend fun saveTokenInformation(

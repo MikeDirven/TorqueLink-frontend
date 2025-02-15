@@ -8,4 +8,6 @@ sealed interface LoginScreenEvents {
 
     data object OnCreateAccountPressed : LoginScreenEvents
     data object OnLoginButtonPressed: LoginScreenEvents
+    data object OnForgotPasswordPressed : LoginScreenEvents
+
 }

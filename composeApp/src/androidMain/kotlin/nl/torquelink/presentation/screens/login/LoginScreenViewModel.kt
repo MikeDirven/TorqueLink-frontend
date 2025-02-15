@@ -32,19 +32,13 @@ class LoginScreenViewModel(
     }
 
     fun dispatch(event: LoginScreenEvents) {
-        when(event) {
+        when (event) {
             is LoginScreenEvents.PasswordInputChanged -> _state.update {
                 it.copy(passwordInput = event.input, hasError = event.error)
             }
+
             is LoginScreenEvents.UsernameInputChanged -> _state.update {
                 it.copy(userInput = event.input, hasError = event.error)
-            }
-            is LoginScreenEvents.OnCreateAccountPressed -> {
-                viewModelScope.launch {
-                    navigator.navigate(
-                        Destinations.RegisterDestination
-                    )
-                }
             }
 
             is LoginScreenEvents.TryLoginWithRememberToken -> {
@@ -55,19 +49,20 @@ class LoginScreenViewModel(
                             token = token
                         )
 
-                        when(response){
+                        when (response) {
                             is SuccessResult.WithBody -> {
                                 preferencesRepository.saveTokenInformation(
                                     response.data
                                 )
-//                            navigator.navigate(
-////                                Destinations.HomeDestination
-//                            ) {
-//                                popUpTo(Destinations.LoginDestination) {
-//                                    inclusive = true
-//                                }
-//                            }
+                                navigator.navigate(
+                                    Destinations.TimeLine
+                                ) {
+                                    popUpTo(Destinations.LoginDestination) {
+                                        inclusive = true
+                                    }
+                                }
                             }
+
                             is ErrorResult.Error -> {
                                 snackBarController.create(
                                     SnackBar(
@@ -75,6 +70,7 @@ class LoginScreenViewModel(
                                     )
                                 )
                             }
+
                             else -> {
                                 snackBarController.create(
                                     SnackBar(
@@ -89,30 +85,32 @@ class LoginScreenViewModel(
 
             is LoginScreenEvents.OnLoginButtonPressed -> {
                 viewModelScope.launch {
-                    val response = when(isEmailLogin(state.value.userInput)){
+                    val response = when (isEmailLogin(state.value.userInput)) {
                         true -> authenticationRepository.loginByEmail(
                             email = state.value.userInput,
                             password = state.value.passwordInput
                         )
+
                         false -> authenticationRepository.loginByUsername(
                             username = state.value.userInput,
                             password = state.value.passwordInput
                         )
                     }
 
-                    when(response){
+                    when (response) {
                         is SuccessResult.WithBody -> {
                             preferencesRepository.saveTokenInformation(
                                 response.data
                             )
-//                            navigator.navigate(
-////                                Destinations.HomeDestination
-//                            ) {
-//                                popUpTo(Destinations.LoginDestination) {
-//                                    inclusive = true
-//                                }
-//                            }
+                            navigator.navigate(
+                                Destinations.TimeLine
+                            ) {
+                                popUpTo(Destinations.LoginDestination) {
+                                    inclusive = true
+                                }
+                            }
                         }
+
                         is ErrorResult.Error -> {
                             snackBarController.create(
                                 SnackBar(
@@ -120,6 +118,7 @@ class LoginScreenViewModel(
                                 )
                             )
                         }
+
                         else -> {
                             snackBarController.create(
                                 SnackBar(
@@ -128,6 +127,22 @@ class LoginScreenViewModel(
                             )
                         }
                     }
+                }
+            }
+
+            is LoginScreenEvents.OnCreateAccountPressed -> {
+                viewModelScope.launch {
+                    navigator.navigate(
+                        Destinations.RegisterDestination
+                    )
+                }
+            }
+
+            is LoginScreenEvents.OnForgotPasswordPressed -> {
+                viewModelScope.launch {
+                    navigator.navigate(
+                        Destinations.ResetPasswordDestination()
+                    )
                 }
             }
         }

@@ -238,7 +238,7 @@ fun RegisterScreen(
 
 @Preview(device = Devices.PIXEL_XL)
 @Composable
-fun LoginScreenPreviewCompact() {
+fun RegisterScreenPreviewCompact() {
     TorqueLinkTheme {
         val viewmodel: RegisterScreenViewModel = viewModel()
         RegisterScreen(
@@ -251,7 +251,7 @@ fun LoginScreenPreviewCompact() {
 
 @Preview(device = Devices.PIXEL_TABLET)
 @Composable
-fun LoginScreenPreviewMedium() {
+fun RegisterScreenPreviewMedium() {
     TorqueLinkTheme {
 //        val viewmodel: RegisterScreenViewModel = viewModel()
         RegisterScreen(

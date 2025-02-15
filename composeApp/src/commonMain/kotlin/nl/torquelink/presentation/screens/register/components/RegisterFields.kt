@@ -17,6 +17,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import nl.torquelink.domain.validators.EmailAddressValidator
+import nl.torquelink.domain.validators.PasswordValidator
+import nl.torquelink.domain.validators.UsernameValidator
+import nl.torquelink.domain.validators.interfaces.onInvalid
+import nl.torquelink.domain.validators.interfaces.onValid
 import nl.torquelink.presentation.language.interfaces.Language
 import nl.torquelink.presentation.language.useLanguage
 
@@ -38,62 +43,46 @@ fun RegisterFields(
         userInputException != null -> true
         passwordInputException != null -> true
         emailInputException != null -> true
-        else -> false
+        else -> null
     }
-    val hasEmptyFields = when {
-        usernameValue.isBlank() -> true
-        passwordValue.isBlank() -> true
-        emailValue.isBlank() -> true
-        else -> false
+    val isEmpty = when {
+        usernameValue.isEmpty() -> true
+        passwordValue.isEmpty() -> true
+        emailValue.isEmpty() -> true
+        else -> null
     }
 
     fun checkUsername(input: String) {
-        val userInputCheck = input.isBlank()
-        userInputException = if(userInputCheck) {
-            language.generic.emptyUserInput
-        } else {
-            null
-        }
-
-        onUsernameChange(input, userInputCheck || hasErrors || hasEmptyFields)
+        UsernameValidator(language).validate(input)
+            .onInvalid { exception ->
+                userInputException = exception
+                onUsernameChange(input, hasErrors ?: isEmpty ?: true)
+            }.onValid {
+                userInputException = null
+                onUsernameChange(input, hasErrors ?: isEmpty ?: false)
+            }
     }
 
     fun checkPassword(input: String) {
-        val passwordInputCheck = input.isBlank()
-        val passwordLengthCheck = input.length < 8
-        passwordInputException = when {
-            passwordInputCheck -> {
-                language.generic.emptyPasswordInput
+        PasswordValidator(language).validate(input)
+            .onInvalid { exception ->
+                passwordInputException = exception
+                onPasswordChange(input, hasErrors ?: isEmpty ?: true)
+            }.onValid {
+                passwordInputException = null
+                onPasswordChange(input, hasErrors ?: isEmpty ?: false)
             }
-            passwordLengthCheck -> {
-                language.generic.passwordToShort
-            }
-            else -> null
-        }
-
-        onPasswordChange(input, passwordInputCheck || passwordLengthCheck || hasErrors || hasEmptyFields)
-    }
-
-    fun isValidEmail(email: String): Boolean {
-        val pattern = Regex("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}\$")
-        val matcher = pattern.matchEntire(email)
-        return matcher != null
     }
 
     fun checkEmail(input: String) {
-        val emailInputCheck = input.isBlank()
-        val emailValid = isValidEmail(input)
-        if(emailInputCheck) {
-            emailInputException = language.generic.emptyEmailInput
-        }
-        if(!emailValid) {
-            emailInputException = language.generic.emailNotValid
-        }
-        if(!emailInputCheck && emailValid) {
-            emailInputException = null
-        }
-
-        onEmailChange(input, emailInputCheck || !emailValid || hasErrors || hasEmptyFields)
+        EmailAddressValidator(language).validate(input)
+            .onInvalid { exception ->
+                emailInputException = exception
+                onEmailChange(input, hasErrors ?: isEmpty ?: true)
+            }.onValid {
+                emailInputException = null
+                onEmailChange(input, hasErrors ?: isEmpty ?: false)
+            }
     }
 
     Column(

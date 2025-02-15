@@ -9,4 +9,12 @@ sealed interface Destinations : Destination {
 
     @Serializable
     data object RegisterDestination : Destinations
+
+    @Serializable
+    data class ResetPasswordDestination(
+        val resetToken: String? = null
+    ): Destinations
+
+    @Serializable
+    data object TimeLine: Destinations
 }

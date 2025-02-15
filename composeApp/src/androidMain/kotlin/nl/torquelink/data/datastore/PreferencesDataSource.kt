@@ -10,12 +10,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.json.Json
 import nl.torquelink.shared.models.auth.AuthenticationResponses
+import nl.torquelink.shared.models.profile.UserProfiles
 import java.io.IOException
 
 class PreferencesDataSource(
     private val dataStore: DataStore<Preferences>
 )  {
+    private val serializer: Json = Json
+
     private val sessionAccessTokenFlow: Flow<String?> = dataStore.data.catch {
         if (it is IOException) {
             Log.e(TAG, "Error reading access token", it)
@@ -32,6 +36,17 @@ class PreferencesDataSource(
         } else throw it
     }.map { preferences ->
         preferences[SESSION_REFRESH_TOKEN]?.ifBlank { null }
+    }
+
+    private val profileFlow: Flow<UserProfiles.UserProfileWithSettingsDto?> = dataStore.data.catch {
+        if (it is IOException) {
+            Log.e(TAG, "Error reading profile", it)
+            emit(emptyPreferences())
+        } else throw it
+    }.map { preferences ->
+        preferences[PROFILE]?.let {
+            serializer.decodeFromString(UserProfiles.UserProfileWithSettingsDto.serializer(), it)
+        }
     }
 
     suspend fun getSessionAccessToken(): String? {
@@ -58,17 +73,36 @@ class PreferencesDataSource(
         }
     }
 
+    suspend fun getProfile() : UserProfiles.UserProfileWithSettingsDto? {
+        return try {
+            dataStore.data.first()[PROFILE]?.let {
+                serializer.decodeFromString(UserProfiles.UserProfileWithSettingsDto.serializer(), it)
+            }
+        } catch (e: IOException) {
+            null
+        }
+    }
+
     suspend fun saveTokenInfo(tokenInformation: AuthenticationResponses) {
         Log.d(TAG, "Saving token info")
         when(tokenInformation){
-            is AuthenticationResponses.AuthenticationResponseWithRemember -> dataStore.edit { preferences ->
-                preferences[SESSION_ACCESS_TOKEN] = tokenInformation.accessToken
-                preferences[SESSION_REFRESH_TOKEN] = tokenInformation.refreshToken
-                preferences[REMEMBER_TOKEN] = tokenInformation.rememberToken
+            is AuthenticationResponses.AuthenticationResponseWithRemember -> {
+                dataStore.edit { preferences ->
+                    preferences[SESSION_ACCESS_TOKEN] = tokenInformation.accessToken
+                    preferences[SESSION_REFRESH_TOKEN] = tokenInformation.refreshToken
+                    preferences[REMEMBER_TOKEN] = tokenInformation.rememberToken
+                }
             }
-            else -> dataStore.edit { preferences ->
-                preferences[SESSION_ACCESS_TOKEN] = tokenInformation.accessToken
-                preferences[SESSION_REFRESH_TOKEN] = tokenInformation.refreshToken
+            is AuthenticationResponses.AuthenticationResponseWithRememberAndProfile -> {
+                dataStore.edit { preferences ->
+                    preferences[PROFILE] = serializer.encodeToString(tokenInformation.profile)
+                }
+            }
+            else -> {
+                dataStore.edit { preferences ->
+                    preferences[SESSION_ACCESS_TOKEN] = tokenInformation.accessToken
+                    preferences[SESSION_REFRESH_TOKEN] = tokenInformation.refreshToken
+                }
             }
         }
 
@@ -86,7 +120,7 @@ class PreferencesDataSource(
 
     companion object {
         private const val TAG = "PreferencesDataSource"
-        val DEVICE_SERIAL = stringPreferencesKey("device_serial")
+        val PROFILE = stringPreferencesKey("profile")
         val SESSION_ACCESS_TOKEN = stringPreferencesKey("session_token")
         val SESSION_REFRESH_TOKEN = stringPreferencesKey("session_refresh_token")
         val REMEMBER_TOKEN = stringPreferencesKey("remember_token")
