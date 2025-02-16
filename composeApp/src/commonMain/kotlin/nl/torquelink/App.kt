@@ -5,8 +5,6 @@ import nl.torquelink.presentation.theme.TorqueLinkTheme
 
 @Composable
 fun App(content: @Composable () -> Unit) {
-
-
     TorqueLinkTheme {
         content()
     }

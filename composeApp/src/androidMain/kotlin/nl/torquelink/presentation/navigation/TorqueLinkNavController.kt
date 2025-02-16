@@ -2,7 +2,6 @@ package nl.torquelink.presentation.navigation
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
@@ -11,7 +10,7 @@ import androidx.navigation.compose.NavHost
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import nl.torquelink.domain.utils.FlowUtil.ObserveAsEvents
+import nl.torquelink.domain.utils.coroutines.FlowUtil.ObserveAsEvents
 import nl.torquelink.presentation.navigation.model.Destination
 import nl.torquelink.presentation.navigation.model.NavigationAction
 import nl.torquelink.presentation.navigation.navigator.Navigator

@@ -1,5 +1,6 @@
 package nl.torquelink.domain.repositories
 
+import nl.torquelink.data.network.result.EmptyResult
 import nl.torquelink.data.network.result.Result
 import nl.torquelink.shared.models.auth.AuthenticationResponses
 
@@ -8,8 +9,10 @@ interface AuthenticationRepository {
     suspend fun loginByEmail(email: String, password: String): Result<AuthenticationResponses>
     suspend fun loginByRememberToken(token: String): Result<AuthenticationResponses>
 
-    suspend fun register(username: String, password: String, email: String): Result<Unit>
+    suspend fun register(username: String, password: String, email: String): EmptyResult
 
-    suspend fun requestPasswordReset(username: String, email: String) : Result<Unit>
-    suspend fun resetPassword(token: String, password: String) : Result<Unit>
+    suspend fun requestPasswordReset(username: String, email: String) : EmptyResult
+    suspend fun resetPassword(token: String, password: String) : EmptyResult
+
+    suspend fun setNotificationToken(token: String) : EmptyResult
 }

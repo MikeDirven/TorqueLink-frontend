@@ -105,7 +105,6 @@ class PreferencesDataSource(
                 }
             }
         }
-
     }
 
     suspend fun clearTokenInfo(removeRememberToken: Boolean = false) {
@@ -118,11 +117,26 @@ class PreferencesDataSource(
         Log.d(TAG, "Clearing token info finished")
     }
 
+    suspend fun setNotificationToken(token: String) {
+        dataStore.edit { preferences ->
+            preferences[NOTIFICATION_TOKEN] = token
+        }
+    }
+
+    suspend fun getNotificationToken(): String? {
+        return try {
+            dataStore.data.first()[NOTIFICATION_TOKEN]?.ifBlank { null }
+        } catch (e: IOException) {
+            null
+        }
+    }
+
     companion object {
         private const val TAG = "PreferencesDataSource"
         val PROFILE = stringPreferencesKey("profile")
         val SESSION_ACCESS_TOKEN = stringPreferencesKey("session_token")
         val SESSION_REFRESH_TOKEN = stringPreferencesKey("session_refresh_token")
         val REMEMBER_TOKEN = stringPreferencesKey("remember_token")
+        val NOTIFICATION_TOKEN = stringPreferencesKey("notification_token")
     }
 }

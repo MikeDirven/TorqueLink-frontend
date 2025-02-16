@@ -33,4 +33,12 @@ class LocalPreferencesRepository(
     override suspend fun clearTokenInformation(removeRemember: Boolean) {
         preferencesDataSource.clearTokenInfo()
     }
+
+    override suspend fun getNotificationToken(): String? {
+        return preferencesDataSource.getNotificationToken()
+    }
+
+    override suspend fun setNotificationToken(token: String) {
+        return preferencesDataSource.setNotificationToken(token)
+    }
 }

@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import nl.torquelink.domain.enums.BaseScreenTabs
 import nl.torquelink.presentation.screens.generic.BaseCompactScreenLayout
 import nl.torquelink.presentation.theme.TorqueLinkTheme
 
@@ -20,7 +21,8 @@ fun TimeLineScreen(
 ) {
     BaseCompactScreenLayout(
         modifier = modifier,
-        snackBarHostState = snackBarHostState
+        snackBarHostState = snackBarHostState,
+        activeTab = BaseScreenTabs.EVENTS
     ) {
 
     }
@@ -31,7 +33,8 @@ fun TimeLineScreen(
 fun TimeLineScreenPreview() {
     TorqueLinkTheme {
         BaseCompactScreenLayout(
-            snackBarHostState = remember { SnackbarHostState() }
+            snackBarHostState = remember { SnackbarHostState() },
+            activeTab = BaseScreenTabs.EVENTS
         ) {
 
         }

@@ -1,7 +1,7 @@
 package nl.torquelink.presentation.screens.profile.create
 
 import android.net.Uri
-import nl.torquelink.shared.enums.CountryCode
+import nl.torquelink.shared.enums.generic.CountryCode
 import java.time.LocalDate
 
 data class ProfileCreateScreenState(

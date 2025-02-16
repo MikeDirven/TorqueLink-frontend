@@ -2,6 +2,7 @@ package nl.torquelink.data.repositories.repositories.remote
 
 import nl.torquelink.data.datastore.PreferencesDataSource
 import nl.torquelink.data.network.TorqueLinkApi
+import nl.torquelink.data.network.result.EmptyResult
 import nl.torquelink.data.network.result.ErrorResult
 import nl.torquelink.data.network.result.Result
 import nl.torquelink.domain.repositories.AuthenticationRepository
@@ -91,6 +92,16 @@ class RemoteAuthenticationRepository(
                     token = token,
                     newPassword = password
                 )
+            )
+        } catch (e: Exception) {
+            return ErrorResult.Error(e)
+        }
+    }
+
+    override suspend fun setNotificationToken(token: String): EmptyResult {
+        return try {
+            torqueLinkApi.authenticationApi.setNotificationToken(
+                token
             )
         } catch (e: Exception) {
             return ErrorResult.Error(e)

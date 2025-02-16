@@ -1,7 +1,6 @@
 package nl.torquelink.presentation.screens.profile.create
 
-import nl.torquelink.presentation.screens.reset.ResetPasswordScreenEvents
-import nl.torquelink.shared.enums.CountryCode
+import nl.torquelink.shared.enums.generic.CountryCode
 import java.time.LocalDate
 
 sealed interface ProfileCreateScreenEvents {

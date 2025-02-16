@@ -1,4 +1,4 @@
-package nl.torquelink.domain.utils
+package nl.torquelink.domain.utils.firebase
 
 import android.content.Context
 import android.os.Build

@@ -7,6 +7,8 @@ interface PreferencesRepository {
     suspend fun getAccessToken(): String?
     suspend fun getRefreshToken(): String?
     suspend fun getRememberToken(): String?
+    suspend fun getNotificationToken(): String?
+    suspend fun setNotificationToken(token: String)
     suspend fun getProfile(): UserProfiles.UserProfileWithSettingsDto?
     suspend fun saveTokenInformation(tokenInformation: AuthenticationResponses)
     suspend fun clearTokenInformation(removeRemember: Boolean)
