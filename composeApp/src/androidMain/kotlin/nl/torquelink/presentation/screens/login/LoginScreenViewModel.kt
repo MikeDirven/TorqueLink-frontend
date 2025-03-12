@@ -14,6 +14,7 @@ import nl.torquelink.presentation.navigation.Destinations
 import nl.torquelink.presentation.navigation.navigator.Navigator
 import nl.torquelink.presentation.snackbar.controller.SnackBarController
 import nl.torquelink.presentation.snackbar.model.SnackBar
+import nl.torquelink.shared.models.auth.AuthenticationResponses
 
 class LoginScreenViewModel(
     private val navigator: Navigator,
@@ -42,7 +43,6 @@ class LoginScreenViewModel(
             }
 
             is LoginScreenEvents.TryLoginWithRememberToken -> {
-
                 viewModelScope.launch {
                     preferencesRepository.getRememberToken()?.let { token ->
                         val response = authenticationRepository.loginByRememberToken(
@@ -54,8 +54,14 @@ class LoginScreenViewModel(
                                 preferencesRepository.saveTokenInformation(
                                     response.data
                                 )
+
+
+
                                 navigator.navigate(
-                                    Destinations.TimeLine
+                                    when(response.data) {
+                                        is AuthenticationResponses.AuthenticationResponseWithRememberAndProfile -> Destinations.TimeLine
+                                        else -> Destinations.CreateProfileDestination
+                                    }
                                 ) {
                                     popUpTo(Destinations.LoginDestination) {
                                         inclusive = true

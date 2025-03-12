@@ -1,5 +1,7 @@
 package nl.torquelink.presentation.screens.timeline
 
-sealed interface TimeLineScreenEvents {
+import nl.torquelink.domain.enums.BaseScreenTabs
 
+sealed interface TimeLineScreenEvents {
+    data class OnTabSwitch(val tab: BaseScreenTabs) : TimeLineScreenEvents
 }

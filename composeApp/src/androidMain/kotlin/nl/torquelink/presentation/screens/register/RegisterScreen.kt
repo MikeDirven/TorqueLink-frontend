@@ -19,7 +19,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -28,10 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import nl.torquelink.presentation.language.interfaces.Language
 import nl.torquelink.presentation.language.useLanguage
-import nl.torquelink.presentation.screens.login.components.LoginFields
 import nl.torquelink.presentation.screens.register.components.RegisterFields
 import nl.torquelink.presentation.theme.TorqueLinkTheme
 import org.jetbrains.compose.resources.painterResource
@@ -46,13 +43,13 @@ fun RegisterScreen(
     state: RegisterScreenState,
     onEvent: (RegisterScreenEvents) -> Unit,
     windowSizeClass: WindowWidthSizeClass,
-    snackBarHosState: SnackbarHostState = remember { SnackbarHostState() },
+    snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     modifier: Modifier = Modifier,
     language: Language = useLanguage()
 ) {
     Scaffold(
         snackbarHost = {
-            SnackbarHost(hostState = snackBarHosState)
+            SnackbarHost(hostState = snackBarHostState)
         },
         contentWindowInsets = WindowInsets.safeContent,
         modifier = modifier.fillMaxSize()
@@ -224,7 +221,8 @@ fun RegisterScreen(
 
                             Button(
                                 modifier = Modifier.weight(0.5f),
-                                onClick = {}
+                                onClick = {},
+                                enabled = !state.hasError
                             ) {
                                 Text(language.register.registerButton)
                             }
@@ -240,7 +238,6 @@ fun RegisterScreen(
 @Composable
 fun RegisterScreenPreviewCompact() {
     TorqueLinkTheme {
-        val viewmodel: RegisterScreenViewModel = viewModel()
         RegisterScreen(
             state = RegisterScreenState(),
             onEvent = {},
@@ -253,7 +250,6 @@ fun RegisterScreenPreviewCompact() {
 @Composable
 fun RegisterScreenPreviewMedium() {
     TorqueLinkTheme {
-//        val viewmodel: RegisterScreenViewModel = viewModel()
         RegisterScreen(
             state = RegisterScreenState(),
             onEvent = {},

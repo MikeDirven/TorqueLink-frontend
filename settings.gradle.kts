@@ -25,6 +25,7 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
+        mavenLocal()
         maven(url = "https://maven.pkg.github.com/MikeDirven/*") {
             credentials {
                 username = System.getenv("GITHUB_USER")

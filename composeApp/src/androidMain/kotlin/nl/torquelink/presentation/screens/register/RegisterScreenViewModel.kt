@@ -9,8 +9,6 @@ import kotlinx.coroutines.launch
 import nl.torquelink.data.network.result.ErrorResult
 import nl.torquelink.data.network.result.SuccessResult
 import nl.torquelink.domain.repositories.AuthenticationRepository
-import nl.torquelink.presentation.language.interfaces.Language
-import nl.torquelink.presentation.language.useLanguage
 import nl.torquelink.presentation.navigation.Destinations
 import nl.torquelink.presentation.navigation.navigator.Navigator
 import nl.torquelink.presentation.snackbar.controller.SnackBarController

@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import coil3.compose.AsyncImage
 import nl.torquelink.domain.enums.BaseScreenTabs
 import nl.torquelink.presentation.screens.generic.BaseCompactScreenLayout
 import nl.torquelink.presentation.theme.TorqueLinkTheme
@@ -22,7 +23,13 @@ fun TimeLineScreen(
     BaseCompactScreenLayout(
         modifier = modifier,
         snackBarHostState = snackBarHostState,
-        activeTab = BaseScreenTabs.EVENTS
+        activeTab = BaseScreenTabs.EVENTS,
+        onTabSwitch = {
+            onEvent(TimeLineScreenEvents.OnTabSwitch(it))
+        },
+        profileAvatar = state.profile?.let {
+            { AsyncImage(it.avatar, "") }
+        }
     ) {
 
     }
@@ -34,7 +41,22 @@ fun TimeLineScreenPreview() {
     TorqueLinkTheme {
         BaseCompactScreenLayout(
             snackBarHostState = remember { SnackbarHostState() },
-            activeTab = BaseScreenTabs.EVENTS
+            activeTab = BaseScreenTabs.EVENTS,
+            onTabSwitch = {}
+        ) {
+
+        }
+    }
+}
+
+@Preview(device = Devices.PIXEL_TABLET)
+@Composable
+fun TimeLineScreenTabletPreview() {
+    TorqueLinkTheme {
+        BaseCompactScreenLayout(
+            snackBarHostState = remember { SnackbarHostState() },
+            activeTab = BaseScreenTabs.EVENTS,
+            onTabSwitch = {}
         ) {
 
         }

@@ -8,6 +8,7 @@ interface Generic {
 
     // Buttons
     val cancelButton: String
+    val confirmButton: String
 
     // Exceptions
     val emptyUserInput: String
@@ -21,4 +22,10 @@ interface Generic {
 
     val emptyEmailInput: String
     val emailNotValid: String
+
+    val emptyFirstNameInput: String
+    val emptyLastNameInput: String
+    val emptyPhoneNumberInput: String
+    val phoneNumberNotValid: String
+    val emptyCityInput: String
 }

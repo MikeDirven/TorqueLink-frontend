@@ -8,8 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import androidx.navigation.navDeepLink
-import androidx.navigation.toRoute
 import nl.torquelink.presentation.navigation.Destinations
 import org.koin.androidx.compose.koinViewModel
 

@@ -128,6 +128,9 @@ kotlin {
             // serialization
             implementation(libs.kotlinx.serialization.json)
 
+            // Date time
+            implementation(libs.kotlinx.datetime)
+
             // shared
             implementation(libs.torquelink.shared)
 

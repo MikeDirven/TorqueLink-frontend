@@ -10,6 +10,7 @@ object GenericMapping : Generic {
     override val emailFieldLabel: String = "Email"
 
     override val cancelButton: String = "Terug"
+    override val confirmButton: String = "Bevestigen"
 
     override val emptyUserInput: String = "Gebruikersnaam of email mag niet leeg zijn."
 
@@ -23,4 +24,9 @@ object GenericMapping : Generic {
     override val emptyEmailInput: String = "Email mag niet leeg zijn."
     override val emailNotValid: String = "Email is niet geldig."
 
+    override val emptyFirstNameInput: String = "Voornaam mag niet leeg zijn."
+    override val emptyLastNameInput: String = "Achternaam mag niet leeg zijn."
+    override val emptyPhoneNumberInput: String = "Telefoonnummer mag niet leeg zijn."
+    override val phoneNumberNotValid: String = "Telefoonnummer is niet geldig."
+    override val emptyCityInput: String = "Plaats mag niet leeg zijn."
 }

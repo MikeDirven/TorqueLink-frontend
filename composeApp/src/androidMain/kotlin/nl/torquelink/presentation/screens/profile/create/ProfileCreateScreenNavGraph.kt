@@ -1,4 +1,4 @@
-package nl.torquelink.presentation.screens.register
+package nl.torquelink.presentation.screens.profile.create
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
@@ -8,23 +8,18 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import androidx.navigation.navDeepLink
 import nl.torquelink.presentation.navigation.Destinations
 import org.koin.androidx.compose.koinViewModel
 
-fun NavGraphBuilder.registerScreenNavGraph(
+fun NavGraphBuilder.profileCreateScreenNavGraph(
     windowSizeClass: WindowWidthSizeClass,
     snackBarHostState: SnackbarHostState
 ) {
-    composable<Destinations.RegisterDestination>(
-        deepLinks = listOf(
-            navDeepLink { uriPattern = "http://torquelink.nl/register" }
-        )
-    ) {
-        val viewModel: RegisterScreenViewModel = koinViewModel()
+    composable<Destinations.LoginDestination> {
+        val viewModel: ProfileCreateScreenViewModel = koinViewModel()
         val viewModelState by viewModel.state.collectAsStateWithLifecycle()
 
-        RegisterScreen(
+        ProfileCreateScreen(
             state = viewModelState,
             onEvent = viewModel::dispatch,
             windowSizeClass = windowSizeClass,

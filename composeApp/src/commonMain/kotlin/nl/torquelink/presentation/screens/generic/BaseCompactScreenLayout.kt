@@ -1,19 +1,20 @@
 package nl.torquelink.presentation.screens.generic
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -27,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import nl.torquelink.domain.enums.BaseScreenTabs
+import nl.torquelink.presentation.screens.generic.components.DefaultTabIcon
 import org.jetbrains.compose.resources.painterResource
 import torquelink.composeapp.generated.resources.Res
 import torquelink.composeapp.generated.resources.text_logo
@@ -38,6 +40,8 @@ fun BaseCompactScreenLayout(
     modifier: Modifier = Modifier,
     snackBarHostState: SnackbarHostState,
     activeTab: BaseScreenTabs,
+    onTabSwitch: (BaseScreenTabs) -> Unit,
+    profileAvatar: (@Composable () -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
     Scaffold(
@@ -88,12 +92,13 @@ fun BaseCompactScreenLayout(
                     Tab(
                         selected = it.ordinal == activeTab.ordinal,
                         onClick = {
-//                        scope.launch {
-//                            pagerState.animateScrollToPage(index)
-//                        }
+                            onTabSwitch(it)
                         },
                         icon = {
-                            Icon(painter = painterResource(it.icon), contentDescription = null)
+                            if(it.isAvatar)
+                                profileAvatar?.invoke()
+                                    ?: DefaultTabIcon(it)
+                            else DefaultTabIcon(it)
                         }
                     )
                 }

@@ -6,9 +6,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import nl.torquelink.data.network.result.ErrorResult
-import nl.torquelink.data.network.result.SuccessResult
-import nl.torquelink.domain.repositories.AuthenticationRepository
 import nl.torquelink.domain.repositories.PreferencesRepository
 import nl.torquelink.presentation.navigation.Destinations
 import nl.torquelink.presentation.navigation.navigator.Navigator
@@ -20,7 +17,9 @@ class TimeLineScreenViewModel(
     private val preferences: PreferencesRepository,
     private val snackBarController: SnackBarController
 ) : ViewModel() {
-    private val _state = MutableStateFlow(TimeLineScreenState())
+    private val _state = MutableStateFlow(
+        TimeLineScreenState()
+    )
 
     val state = _state.asStateFlow()
 
@@ -29,19 +28,24 @@ class TimeLineScreenViewModel(
             // Redirect to login if not logged in
             checkAccessToken()
 
-            // Get user profile for image
             preferences.getProfile()?.let {
-
-            } ?: snackBarController.create(
-                SnackBar(
-                    "Unable to load profile!"
-                )
-            )
+                _state.update {
+                    it.copy(
+                        profile = it.profile
+                    )
+                }
+            }
         }
     }
 
     fun dispatch(event: TimeLineScreenEvents) {
-
+        when(event) {
+            is TimeLineScreenEvents.OnTabSwitch -> {
+                viewModelScope.launch {
+                    navigator.navigate(event.tab.destination)
+                }
+            }
+        }
     }
 
     private suspend fun checkAccessToken() {
