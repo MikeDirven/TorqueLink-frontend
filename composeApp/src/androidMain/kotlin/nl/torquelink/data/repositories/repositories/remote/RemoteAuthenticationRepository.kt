@@ -12,7 +12,6 @@ import nl.torquelink.shared.models.auth.RegistrationRequests
 import nl.torquelink.shared.models.auth.ResetPasswordRequests
 
 class RemoteAuthenticationRepository(
-    private val preferencesDataSource: PreferencesDataSource,
     private val torqueLinkApi: TorqueLinkApi
 ) : AuthenticationRepository {
     override suspend fun loginByUsername(username: String, password: String): Result<AuthenticationResponses> {

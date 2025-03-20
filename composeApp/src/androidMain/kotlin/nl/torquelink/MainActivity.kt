@@ -11,6 +11,8 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import nl.torquelink.presentation.TorqueLinkApp
 import org.koin.compose.KoinContext
 
@@ -18,6 +20,11 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        MobileAds.initialize(this) {
+
+        }
+
         setContent {
             val widthSizeClass = calculateWindowSizeClass(this).widthSizeClass
             val deepLinkIntent = intent

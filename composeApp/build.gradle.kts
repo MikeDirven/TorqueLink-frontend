@@ -107,7 +107,7 @@ kotlin {
             implementation(libs.google.firebase.analytics)
             implementation(libs.google.firebase.crashlytics)
             implementation(libs.firebase.messaging)
-            
+            implementation(libs.play.services.ads)
             // coil
             implementation(libs.bundles.coil.compose)
         }
@@ -190,9 +190,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
-}
-dependencies {
-    debugImplementation(libs.ui.tooling)
 }
 
 compose.desktop {

@@ -23,10 +23,6 @@ class RegisterScreenViewModel(
 
     val state = _state.asStateFlow()
 
-    private fun checkInputs() {
-        // TODO: Check inputs when exceptions are possible in the state
-    }
-
     fun dispatch(event: RegisterScreenEvents) {
         when(event) {
             is RegisterScreenEvents.PasswordInputChanged -> _state.update {

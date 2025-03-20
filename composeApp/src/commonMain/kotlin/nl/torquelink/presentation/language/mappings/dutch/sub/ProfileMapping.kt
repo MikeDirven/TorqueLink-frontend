@@ -15,5 +15,6 @@ object ProfileMapping : Profile {
     override val cityFieldLabel: String = "Stad"
 
     // Buttons
-    override val createProfileButton: String = "Create profile"
+    override val createProfileTitle: String = "Profiel maken"
+    override val createProfileButton: String = "Aanmaken"
 }

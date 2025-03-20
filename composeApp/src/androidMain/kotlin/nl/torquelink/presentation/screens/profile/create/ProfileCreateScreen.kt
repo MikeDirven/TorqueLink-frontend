@@ -1,4 +1,3 @@
-@file:Suppress("OPT_IN_USAGE_FUTURE_ERROR")
 @file:OptIn(ExperimentalMaterial3Api::class)
 
 package nl.torquelink.presentation.screens.profile.create
@@ -14,15 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -32,8 +29,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.datetime.Clock
 import kotlinx.datetime.toKotlinLocalDate
+import nl.torquelink.presentation.language.interfaces.Language
+import nl.torquelink.presentation.language.useLanguage
 import nl.torquelink.presentation.theme.TorqueLinkTheme
 import org.jetbrains.compose.resources.painterResource
 import torquelink.composeapp.generated.resources.Res
@@ -46,6 +44,7 @@ fun ProfileCreateScreen(
     onEvent: (ProfileCreateScreenEvents) -> Unit,
     windowSizeClass: WindowWidthSizeClass,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    language: Language = useLanguage(),
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -71,7 +70,7 @@ fun ProfileCreateScreen(
                         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
                     ) {
                         Text(
-                            text = "Create Profile",
+                            text = language.profile.createProfileTitle,
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )
@@ -113,12 +112,12 @@ fun ProfileCreateScreen(
                         Button(
                             modifier = Modifier.fillMaxWidth(0.9f),
                             onClick = {
-//                            onEvent(RegisterScreenEvents.OnRegisterPressed)
+                                onEvent(ProfileCreateScreenEvents.CreateProfile)
                             },
-//                        enabled = !state.hasError
+                            enabled = !state.hasError
 
                         ) {
-//                        Text(language.register.registerButton)
+                            Text(language.profile.createProfileButton)
                         }
                     }
 

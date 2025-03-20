@@ -15,7 +15,7 @@ fun NavGraphBuilder.profileCreateScreenNavGraph(
     windowSizeClass: WindowWidthSizeClass,
     snackBarHostState: SnackbarHostState
 ) {
-    composable<Destinations.LoginDestination> {
+    composable<Destinations.CreateProfileDestination> {
         val viewModel: ProfileCreateScreenViewModel = koinViewModel()
         val viewModelState by viewModel.state.collectAsStateWithLifecycle()
 

@@ -7,6 +7,8 @@ import torquelink.composeapp.generated.resources.cars
 import torquelink.composeapp.generated.resources.events
 import torquelink.composeapp.generated.resources.groups
 import torquelink.composeapp.generated.resources.home
+import torquelink.composeapp.generated.resources.logo
+import torquelink.composeapp.generated.resources.logo_dark
 import torquelink.composeapp.generated.resources.profile
 
 enum class BaseScreenTabs(

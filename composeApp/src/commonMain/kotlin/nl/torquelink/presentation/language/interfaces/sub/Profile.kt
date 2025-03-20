@@ -13,5 +13,6 @@ interface Profile {
     val cityFieldLabel: String
 
     // Buttons
+    val createProfileTitle: String
     val createProfileButton: String
 }

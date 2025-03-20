@@ -55,8 +55,6 @@ class LoginScreenViewModel(
                                     response.data
                                 )
 
-
-
                                 navigator.navigate(
                                     when(response.data) {
                                         is AuthenticationResponses.AuthenticationResponseWithRememberAndProfile -> Destinations.TimeLine
@@ -109,7 +107,10 @@ class LoginScreenViewModel(
                                 response.data
                             )
                             navigator.navigate(
-                                Destinations.TimeLine
+                                when(response.data) {
+                                    is AuthenticationResponses.AuthenticationResponseWithRememberAndProfile -> Destinations.TimeLine
+                                    else -> Destinations.CreateProfileDestination
+                                }
                             ) {
                                 popUpTo(Destinations.LoginDestination) {
                                     inclusive = true
