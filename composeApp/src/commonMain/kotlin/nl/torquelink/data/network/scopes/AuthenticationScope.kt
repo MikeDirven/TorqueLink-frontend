@@ -1,6 +1,8 @@
 package nl.torquelink.data.network.scopes
 
 import io.ktor.client.plugins.resources.post
+import io.ktor.client.request.bearerAuth
+import io.ktor.client.request.header
 import io.ktor.client.request.setBody
 import nl.torquelink.data.network.client.httpClient
 import nl.torquelink.data.network.result.EmptyResult
@@ -37,11 +39,12 @@ object AuthenticationScope {
         }.decode<Unit>()
     }
 
-    suspend fun setNotificationToken(body: String) : EmptyResult {
+    suspend fun setNotificationToken(token: String, body: String) : EmptyResult {
         return httpClient.post(
             TorqueLinkAuthRouting.Notifications.Token()
         ){
             setBody(body)
+            header("Torquelink-Access", token)
         }.decode<Unit>()
     }
 }

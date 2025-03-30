@@ -1,6 +1,9 @@
-package nl.torquelink.presentation.screens.timeline
+package nl.torquelink.presentation.screens.group.overview
 
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -14,9 +17,9 @@ import nl.torquelink.presentation.screens.generic.components.AdmobBanner
 import nl.torquelink.presentation.theme.TorqueLinkTheme
 
 @Composable
-fun TimeLineScreen(
-    state: TimeLineScreenState,
-    onEvent: (TimeLineScreenEvents) -> Unit,
+fun GroupOverviewScreen(
+    state: GroupOverviewScreenState,
+    onEvent: (GroupOverviewScreenEvents) -> Unit,
     windowSizeClass: WindowWidthSizeClass,
     snackBarHostState: SnackbarHostState,
     modifier: Modifier = Modifier
@@ -24,21 +27,27 @@ fun TimeLineScreen(
     BaseCompactScreenLayout(
         modifier = modifier,
         snackBarHostState = snackBarHostState,
-        activeTab = BaseScreenTabs.HOME,
+        activeTab = BaseScreenTabs.GROUPS,
         onTabSwitch = {
-            onEvent(TimeLineScreenEvents.OnTabSwitch(it))
+            onEvent(GroupOverviewScreenEvents.OnTabSwitch(it))
         },
         profileAvatar = state.profile?.let {
             { AsyncImage(it.avatar, "") }
         }
     ) {
+        LazyColumn {
+            items(state.groupsData) {
+                Text(it.groupName)
+            }
+        }
+
         AdmobBanner()
     }
 }
 
 @Preview(device = Devices.PIXEL_XL)
 @Composable
-fun TimeLineScreenPreview() {
+fun GroupOverviewScreenPreview() {
     TorqueLinkTheme {
         BaseCompactScreenLayout(
             snackBarHostState = remember { SnackbarHostState() },

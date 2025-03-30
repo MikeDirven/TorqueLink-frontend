@@ -77,7 +77,7 @@ fun BaseCompactScreenLayout(
                 selectedTabIndex = activeTab.ordinal,
                 indicator = { tabPositions ->
                     PrimaryIndicator(
-                        modifier = Modifier.tabIndicatorOffset(tabPositions.first()),
+                        modifier = Modifier.tabIndicatorOffset(tabPositions[activeTab.ordinal]),
                         height = 5.dp
                     )
                 },

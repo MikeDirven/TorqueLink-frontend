@@ -1,4 +1,4 @@
-package nl.torquelink.presentation.screens.timeline
+package nl.torquelink.presentation.screens.group.overview
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
@@ -12,17 +12,15 @@ import nl.torquelink.domain.utils.firebase.FirebaseUtil
 import nl.torquelink.presentation.navigation.Destinations
 import org.koin.androidx.compose.koinViewModel
 
-fun NavGraphBuilder.timeLineScreenNavGraph(
+fun NavGraphBuilder.groupOverviewScreenNavGraph(
     windowSizeClass: WindowWidthSizeClass,
     snackBarHostState: SnackbarHostState
 ) {
-    composable<Destinations.TimeLine> {
-        val viewModel: TimeLineScreenViewModel = koinViewModel()
+    composable<Destinations.Groups.Overview> {
+        val viewModel: GroupOverviewScreenViewModel = koinViewModel()
         val viewModelState by viewModel.state.collectAsStateWithLifecycle()
 
-        FirebaseUtil.InitializeMessaging()
-
-        TimeLineScreen(
+        GroupOverviewScreen(
             state = viewModelState,
             onEvent = viewModel::dispatch,
             windowSizeClass = windowSizeClass,

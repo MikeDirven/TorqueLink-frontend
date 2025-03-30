@@ -12,6 +12,7 @@ import nl.torquelink.shared.models.auth.RegistrationRequests
 import nl.torquelink.shared.models.auth.ResetPasswordRequests
 
 class RemoteAuthenticationRepository(
+    private val preferencesDataSource: PreferencesDataSource,
     private val torqueLinkApi: TorqueLinkApi
 ) : AuthenticationRepository {
     override suspend fun loginByUsername(username: String, password: String): Result<AuthenticationResponses> {
@@ -97,10 +98,14 @@ class RemoteAuthenticationRepository(
         }
     }
 
-    override suspend fun setNotificationToken(token: String): EmptyResult {
+    override suspend fun setNotificationToken(notificationToken: String): EmptyResult {
         return try {
+            val accessToken = preferencesDataSource.getSessionAccessToken()
+                ?: return ErrorResult.Error(Exception("No access token found"))
+
             torqueLinkApi.authenticationApi.setNotificationToken(
-                token
+                accessToken,
+                notificationToken
             )
         } catch (e: Exception) {
             return ErrorResult.Error(e)

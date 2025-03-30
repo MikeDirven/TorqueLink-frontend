@@ -1,6 +1,7 @@
 package nl.torquelink.presentation.di
 
 import nl.torquelink.presentation.navigation.di.NavigationModule
+import nl.torquelink.presentation.screens.group.overview.GroupOverviewScreenViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import nl.torquelink.presentation.screens.login.LoginScreenViewModel
@@ -17,6 +18,10 @@ val PresentationModule = module {
     viewModelOf(::LoginScreenViewModel)
     viewModelOf(::RegisterScreenViewModel)
     viewModelOf(::ResetPasswordScreenViewModel)
-    viewModelOf(::TimeLineScreenViewModel)
     viewModelOf(::ProfileCreateScreenViewModel)
+
+    viewModelOf(::TimeLineScreenViewModel)
+
+    // Groups
+    viewModelOf(::GroupOverviewScreenViewModel)
 }

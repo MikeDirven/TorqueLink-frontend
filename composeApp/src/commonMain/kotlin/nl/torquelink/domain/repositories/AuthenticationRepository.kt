@@ -14,5 +14,5 @@ interface AuthenticationRepository {
     suspend fun requestPasswordReset(username: String, email: String) : EmptyResult
     suspend fun resetPassword(token: String, password: String) : EmptyResult
 
-    suspend fun setNotificationToken(token: String) : EmptyResult
+    suspend fun setNotificationToken(notificationToken: String) : EmptyResult
 }

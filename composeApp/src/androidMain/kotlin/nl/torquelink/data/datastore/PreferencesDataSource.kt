@@ -95,6 +95,9 @@ class PreferencesDataSource(
             }
             is AuthenticationResponses.AuthenticationResponseWithRememberAndProfile -> {
                 dataStore.edit { preferences ->
+                    preferences[SESSION_ACCESS_TOKEN] = tokenInformation.accessToken
+                    preferences[SESSION_REFRESH_TOKEN] = tokenInformation.refreshToken
+                    preferences[REMEMBER_TOKEN] = tokenInformation.rememberToken
                     preferences[PROFILE] = serializer.encodeToString(tokenInformation.profile)
                 }
             }

@@ -2,8 +2,13 @@ package nl.torquelink.domain.utils.firebase
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.ComponentName
+import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.runBlocking
@@ -22,7 +27,7 @@ class FirebaseMessagingServiceImpl : FirebaseMessagingService(), KoinComponent {
     override fun onNewToken(token: String) {
         Log.d("FCM", "Refreshed token: $token")
         runBlocking {
-            if (preferencesRepository.getNotificationToken() != token){
+            if (preferencesRepository.getNotificationToken() != token) {
                 preferencesRepository.setNotificationToken(token)
                 // Sent to server
                 authenticationRepository.setNotificationToken(token)
@@ -44,7 +49,7 @@ class FirebaseMessagingServiceImpl : FirebaseMessagingService(), KoinComponent {
             // increment id
             notificationIdCounter = notificationIdCounter.inc()
             // Show the notification
-            notificationManager!!.notify(notificationIdCounter, builder.build())
+            notificationManager?.notify(notificationIdCounter, builder.build())
         }
     }
 

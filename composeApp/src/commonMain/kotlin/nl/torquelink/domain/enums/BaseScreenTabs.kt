@@ -26,7 +26,7 @@ enum class BaseScreenTabs(
     ),
     GROUPS(
         icon = Res.drawable.groups,
-        destination = Destinations.TimeLine
+        destination = Destinations.Groups.Overview
     ),
     CARS(
         icon = Res.drawable.cars,

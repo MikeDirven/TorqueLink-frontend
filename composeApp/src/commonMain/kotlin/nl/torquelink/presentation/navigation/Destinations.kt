@@ -20,4 +20,9 @@ sealed interface Destinations : Destination {
 
     @Serializable
     data object TimeLine: Destinations
+
+    sealed interface Groups : Destinations {
+        @Serializable
+        data object Overview : Groups
+    }
 }
