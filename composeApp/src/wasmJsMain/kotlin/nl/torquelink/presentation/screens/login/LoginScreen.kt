@@ -20,14 +20,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -64,6 +61,7 @@ fun LoginScreen(
         contentWindowInsets = WindowInsets.safeContent,
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
+
         when(windowSize){
             is WindowSize.Small -> {
                 Column(
@@ -250,31 +248,5 @@ fun LoginScreen(
                 }
             }
         }
-    }
-}
-
-@Preview(device = Devices.PIXEL_XL)
-@Composable
-fun LoginScreenPreviewCompact() {
-    TorqueLinkTheme {
-        val viewmodel: LoginScreenViewModel = viewModel()
-        LoginScreen(
-            state = viewmodel.state.collectAsStateWithLifecycle().value,
-            onEvent = viewmodel::dispatch,
-            windowSize = WindowSize.Small(0,0)
-        )
-    }
-}
-
-@Preview(device = Devices.PIXEL_TABLET)
-@Composable
-fun LoginScreenPreviewMedium() {
-    TorqueLinkTheme {
-        val viewmodel: LoginScreenViewModel = viewModel()
-        LoginScreen(
-            state = viewmodel.state.collectAsStateWithLifecycle().value,
-            onEvent = viewmodel::dispatch,
-            windowSize = WindowSize.Medium(0,0)
-        )
     }
 }

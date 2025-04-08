@@ -10,7 +10,6 @@ import nl.torquelink.domain.repositories.PreferencesRepository
 import nl.torquelink.presentation.navigation.Destinations
 import nl.torquelink.presentation.navigation.navigator.Navigator
 import nl.torquelink.presentation.snackbar.controller.SnackBarController
-import nl.torquelink.presentation.snackbar.model.SnackBar
 
 class TimeLineScreenViewModel(
     private val navigator: Navigator,

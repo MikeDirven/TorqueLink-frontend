@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.torquelink.data.network.result.ErrorResult
 import nl.torquelink.data.network.result.SuccessResult
+import nl.torquelink.domain.exceptions.localMessage
 import nl.torquelink.domain.repositories.AuthenticationRepository
 import nl.torquelink.domain.repositories.PreferencesRepository
 import nl.torquelink.presentation.navigation.Destinations
@@ -70,7 +71,7 @@ class LoginScreenViewModel(
                             is ErrorResult.Error -> {
                                 snackBarController.create(
                                     SnackBar(
-                                        response.exception.localizedMessage
+                                        response.exception.localMessage
                                     )
                                 )
                             }
@@ -121,7 +122,7 @@ class LoginScreenViewModel(
                         is ErrorResult.Error -> {
                             snackBarController.create(
                                 SnackBar(
-                                    response.exception.localizedMessage
+                                    response.exception.localMessage
                                 )
                             )
                         }

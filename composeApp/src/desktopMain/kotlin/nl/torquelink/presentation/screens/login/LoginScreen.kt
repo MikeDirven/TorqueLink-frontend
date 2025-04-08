@@ -31,8 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import nl.torquelink.domain.window.WindowSize
-import nl.torquelink.domain.window.getCurrentWindowSize
 import nl.torquelink.presentation.language.interfaces.Language
 import nl.torquelink.presentation.language.useLanguage
 import nl.torquelink.presentation.screens.login.components.LoginFields
@@ -45,10 +43,10 @@ import torquelink.composeapp.generated.resources.text_logo
 import torquelink.composeapp.generated.resources.text_logo_dark
 
 @Composable
-fun LoginScreen(
+actual fun LoginScreen(
     state: LoginScreenState,
     onEvent: (LoginScreenEvents) -> Unit,
-    windowSize: WindowSize = getCurrentWindowSize(),
+    windowSizeClass: WindowWidthSizeClass,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     modifier: Modifier = Modifier,
     language: Language = useLanguage()
@@ -64,8 +62,8 @@ fun LoginScreen(
         contentWindowInsets = WindowInsets.safeContent,
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
-        when(windowSize){
-            is WindowSize.Small -> {
+        when(windowSizeClass){
+            WindowWidthSizeClass.Compact -> {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -261,7 +259,7 @@ fun LoginScreenPreviewCompact() {
         LoginScreen(
             state = viewmodel.state.collectAsStateWithLifecycle().value,
             onEvent = viewmodel::dispatch,
-            windowSize = WindowSize.Small(0,0)
+            windowSizeClass = WindowWidthSizeClass.Compact
         )
     }
 }
@@ -274,7 +272,7 @@ fun LoginScreenPreviewMedium() {
         LoginScreen(
             state = viewmodel.state.collectAsStateWithLifecycle().value,
             onEvent = viewmodel::dispatch,
-            windowSize = WindowSize.Medium(0,0)
+            windowSizeClass = WindowWidthSizeClass.Medium
         )
     }
 }

@@ -12,7 +12,6 @@ import nl.torquelink.presentation.navigation.Destinations
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.loginScreenNavGraph(
-    windowSizeClass: WindowWidthSizeClass,
     snackBarHostState: SnackbarHostState
 ) {
     composable<Destinations.LoginDestination> {
@@ -22,7 +21,6 @@ fun NavGraphBuilder.loginScreenNavGraph(
         LoginScreen(
             state = viewModelState,
             onEvent = viewModel::dispatch,
-            windowSizeClass = windowSizeClass,
             snackBarHostState = snackBarHostState,
             modifier = Modifier
                 .fillMaxSize()

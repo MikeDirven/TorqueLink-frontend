@@ -125,6 +125,9 @@ kotlin {
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
 
+            //navigation
+            implementation(libs.androidx.compose.navigation)
+
             // serialization
             implementation(libs.kotlinx.serialization.json)
 
