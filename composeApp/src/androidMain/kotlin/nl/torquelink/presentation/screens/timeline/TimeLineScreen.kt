@@ -17,7 +17,6 @@ import nl.torquelink.presentation.theme.TorqueLinkTheme
 fun TimeLineScreen(
     state: TimeLineScreenState,
     onEvent: (TimeLineScreenEvents) -> Unit,
-    windowSizeClass: WindowWidthSizeClass,
     snackBarHostState: SnackbarHostState,
     modifier: Modifier = Modifier
 ) {

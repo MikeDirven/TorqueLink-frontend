@@ -29,8 +29,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nl.torquelink.domain.window.WindowSize
+import nl.torquelink.domain.window.getCurrentWindowSize
 import nl.torquelink.presentation.language.interfaces.Language
 import nl.torquelink.presentation.language.useLanguage
+import nl.torquelink.presentation.screens.reset.components.ResetPasswordFields
 import nl.torquelink.presentation.theme.TorqueLinkTheme
 import org.jetbrains.compose.resources.painterResource
 import torquelink.composeapp.generated.resources.Res
@@ -43,7 +46,7 @@ import torquelink.composeapp.generated.resources.text_logo_dark
 fun ResetPasswordScreen(
     state: ResetPasswordScreenState,
     onEvent: (ResetPasswordScreenEvents) -> Unit,
-    windowSizeClass: WindowWidthSizeClass,
+    windowSize: WindowSize = getCurrentWindowSize(),
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     modifier: Modifier = Modifier,
     language: Language = useLanguage(),
@@ -56,8 +59,8 @@ fun ResetPasswordScreen(
         contentWindowInsets = WindowInsets.safeContent,
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
-        when(windowSizeClass){
-            WindowWidthSizeClass.Compact -> {
+        when(windowSize){
+            is WindowSize.Small -> {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -248,7 +251,7 @@ fun ResetPasswordScreenPreviewCompact() {
         ResetPasswordScreen(
             state = viewmodel.state.collectAsStateWithLifecycle().value,
             onEvent = viewmodel::dispatch,
-            windowSizeClass = WindowWidthSizeClass.Compact
+            windowSize = WindowSize.Small(0,0)
         )
     }
 }
@@ -261,7 +264,7 @@ fun ResetPasswordScreenPreviewMedium() {
         ResetPasswordScreen(
             state = viewmodel.state.collectAsStateWithLifecycle().value,
             onEvent = viewmodel::dispatch,
-            windowSizeClass = WindowWidthSizeClass.Medium
+            windowSize = WindowSize.Small(0,0)
         )
     }
 }

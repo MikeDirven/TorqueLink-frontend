@@ -48,11 +48,11 @@ fun TorqueLinkApp(
         snackBarHostState = snackBarHostState
     ) { snackBarState ->
         loginScreenNavGraph(snackBarHostState = snackBarState)
-        registerScreenNavGraph(windowSizeClass = windowSizeClass, snackBarHostState = snackBarState)
-        resetPasswordNavGraph(windowSizeClass = windowSizeClass, snackBarHostState = snackBarState)
-        profileCreateScreenNavGraph(windowSizeClass = windowSizeClass, snackBarHostState = snackBarState)
+        registerScreenNavGraph(snackBarHostState = snackBarState)
+        resetPasswordNavGraph(snackBarHostState = snackBarState)
+        profileCreateScreenNavGraph(snackBarHostState = snackBarState)
 
-        timeLineScreenNavGraph(windowSizeClass = windowSizeClass, snackBarHostState = snackBarState)
+        timeLineScreenNavGraph(snackBarHostState = snackBarState)
 
         groupOverviewScreenNavGraph(windowSizeClass = windowSizeClass, snackBarHostState = snackBarState)
     }

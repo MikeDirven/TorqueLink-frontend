@@ -19,7 +19,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nl.torquelink.domain.window.WindowSize
+import nl.torquelink.domain.window.getCurrentWindowSize
 import nl.torquelink.presentation.language.interfaces.Language
 import nl.torquelink.presentation.language.useLanguage
 import nl.torquelink.presentation.screens.register.components.RegisterFields
@@ -42,7 +43,7 @@ import torquelink.composeapp.generated.resources.text_logo_dark
 fun RegisterScreen(
     state: RegisterScreenState,
     onEvent: (RegisterScreenEvents) -> Unit,
-    windowSizeClass: WindowWidthSizeClass,
+    windowSize: WindowSize = getCurrentWindowSize(),
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     modifier: Modifier = Modifier,
     language: Language = useLanguage()
@@ -54,8 +55,8 @@ fun RegisterScreen(
         contentWindowInsets = WindowInsets.safeContent,
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
-        when(windowSizeClass){
-            WindowWidthSizeClass.Compact -> {
+        when(windowSize){
+            is WindowSize.Small -> {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -241,7 +242,7 @@ fun RegisterScreenPreviewCompact() {
         RegisterScreen(
             state = RegisterScreenState(),
             onEvent = {},
-            windowSizeClass = WindowWidthSizeClass.Compact
+            windowSize = WindowSize.Small(0,0)
         )
     }
 }
@@ -253,7 +254,7 @@ fun RegisterScreenPreviewMedium() {
         RegisterScreen(
             state = RegisterScreenState(),
             onEvent = {},
-            windowSizeClass = WindowWidthSizeClass.Medium
+            windowSize = WindowSize.Medium(0,0)
         )
     }
 }

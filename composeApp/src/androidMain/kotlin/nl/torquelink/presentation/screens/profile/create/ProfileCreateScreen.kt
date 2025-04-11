@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package nl.torquelink.presentation.screens.profile.create
 
 import androidx.compose.foundation.Image
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -30,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.toKotlinLocalDate
+import nl.torquelink.domain.window.WindowSize
+import nl.torquelink.domain.window.getCurrentWindowSize
 import nl.torquelink.presentation.language.interfaces.Language
 import nl.torquelink.presentation.language.useLanguage
 import nl.torquelink.presentation.theme.TorqueLinkTheme
@@ -42,7 +41,7 @@ import torquelink.composeapp.generated.resources.text_logo_dark
 fun ProfileCreateScreen(
     state: ProfileCreateScreenState,
     onEvent: (ProfileCreateScreenEvents) -> Unit,
-    windowSizeClass: WindowWidthSizeClass,
+    windowSize: WindowSize = getCurrentWindowSize(),
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     language: Language = useLanguage(),
     modifier: Modifier = Modifier
@@ -54,8 +53,8 @@ fun ProfileCreateScreen(
         contentWindowInsets = WindowInsets.safeContent,
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
-        when (windowSizeClass) {
-            WindowWidthSizeClass.Compact -> {
+        when (windowSize) {
+            is WindowSize.Small -> {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -162,7 +161,7 @@ fun RegisterScreenPreviewCompact() {
         ProfileCreateScreen(
             state = ProfileCreateScreenState(),
             onEvent = {},
-            windowSizeClass = WindowWidthSizeClass.Compact
+            windowSize = WindowSize.Small(0,0)
         )
     }
 }
@@ -174,7 +173,7 @@ fun RegisterScreenPreviewMedium() {
         ProfileCreateScreen(
             state = ProfileCreateScreenState(),
             onEvent = {},
-            windowSizeClass = WindowWidthSizeClass.Medium
+            windowSize = WindowSize.Medium(0,0)
         )
     }
 }

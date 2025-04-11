@@ -10,7 +10,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.google.ksp)
-    alias(libs.plugins.ktorfit)
     alias(libs.plugins.google.mobile.services)
     alias(libs.plugins.google.firebase.crashlytics)
 }
@@ -108,8 +107,6 @@ kotlin {
             implementation(libs.google.firebase.crashlytics)
             implementation(libs.firebase.messaging)
             implementation(libs.play.services.ads)
-            // coil
-            implementation(libs.bundles.coil.compose)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -124,6 +121,7 @@ kotlin {
 
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
+            implementation(libs.koin.compose)
 
             //navigation
             implementation(libs.androidx.compose.navigation)
@@ -139,6 +137,9 @@ kotlin {
 
             // ktor
             implementation(libs.bundles.ktor)
+
+            // coil
+            implementation(libs.bundles.coil.compose)
         }
 
         desktopMain.dependencies {

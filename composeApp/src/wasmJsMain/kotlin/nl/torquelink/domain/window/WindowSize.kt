@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import kotlinx.browser.window
 
 @Composable
-fun getCurrentWindowSize(): WindowSize {
+actual fun getCurrentWindowSize(): WindowSize {
     val width = window.innerWidth
     val height = window.innerHeight
 

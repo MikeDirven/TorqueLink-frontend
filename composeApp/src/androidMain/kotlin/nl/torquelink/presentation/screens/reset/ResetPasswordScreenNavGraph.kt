@@ -14,7 +14,6 @@ import nl.torquelink.presentation.navigation.Destinations
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.resetPasswordNavGraph(
-    windowSizeClass: WindowWidthSizeClass,
     snackBarHostState: SnackbarHostState
 ) {
     composable<Destinations.ResetPasswordDestination>(
@@ -31,7 +30,6 @@ fun NavGraphBuilder.resetPasswordNavGraph(
         ResetPasswordScreen(
             state = viewModelState,
             onEvent = viewModel::dispatch,
-            windowSizeClass = windowSizeClass,
             snackBarHostState = snackBarHostState,
             resetToken = resetToken,
             modifier = Modifier

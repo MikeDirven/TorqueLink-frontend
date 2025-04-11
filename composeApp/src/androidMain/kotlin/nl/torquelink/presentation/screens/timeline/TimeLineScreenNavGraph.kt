@@ -13,7 +13,6 @@ import nl.torquelink.presentation.navigation.Destinations
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.timeLineScreenNavGraph(
-    windowSizeClass: WindowWidthSizeClass,
     snackBarHostState: SnackbarHostState
 ) {
     composable<Destinations.TimeLine> {
@@ -25,7 +24,6 @@ fun NavGraphBuilder.timeLineScreenNavGraph(
         TimeLineScreen(
             state = viewModelState,
             onEvent = viewModel::dispatch,
-            windowSizeClass = windowSizeClass,
             snackBarHostState = snackBarHostState,
             modifier = Modifier
                 .fillMaxSize()

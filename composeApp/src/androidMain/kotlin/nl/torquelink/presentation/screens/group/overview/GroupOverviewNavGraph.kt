@@ -8,12 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import nl.torquelink.domain.utils.firebase.FirebaseUtil
+import nl.torquelink.presentation.group.overview.GroupOverviewScreenViewModel
 import nl.torquelink.presentation.navigation.Destinations
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.groupOverviewScreenNavGraph(
-    windowSizeClass: WindowWidthSizeClass,
     snackBarHostState: SnackbarHostState
 ) {
     composable<Destinations.Groups.Overview> {
@@ -23,7 +22,6 @@ fun NavGraphBuilder.groupOverviewScreenNavGraph(
         GroupOverviewScreen(
             state = viewModelState,
             onEvent = viewModel::dispatch,
-            windowSizeClass = windowSizeClass,
             snackBarHostState = snackBarHostState,
             modifier = Modifier
                 .fillMaxSize()

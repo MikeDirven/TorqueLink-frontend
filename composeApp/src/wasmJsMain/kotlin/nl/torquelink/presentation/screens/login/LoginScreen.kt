@@ -229,7 +229,9 @@ fun LoginScreen(
 
                             Button(
                                 modifier = Modifier.weight(0.5f),
-                                onClick = {},
+                                onClick = {
+                                    onEvent(LoginScreenEvents.OnLoginButtonPressed)
+                                },
                                 enabled = !state.hasError
                             ) {
                                 Text(language.login.loginButton)

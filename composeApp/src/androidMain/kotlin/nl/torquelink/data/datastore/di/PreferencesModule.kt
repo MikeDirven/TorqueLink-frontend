@@ -7,5 +7,6 @@ import nl.torquelink.data.datastore.PreferencesDataSource
 
 val PreferencesModule = module {
     single { provideDatastore(androidContext()) }
-    singleOf(::PreferencesDataSource)
+    single { providePreferencesDataSource(get()) }
+//    singleOf(::PreferencesDataSource)
 }

@@ -12,6 +12,10 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import nl.torquelink.domain.enums.BaseScreenTabs
+import nl.torquelink.domain.window.WindowSize
+import nl.torquelink.domain.window.getCurrentWindowSize
+import nl.torquelink.presentation.group.overview.GroupOverviewScreenEvents
+import nl.torquelink.presentation.group.overview.GroupOverviewScreenState
 import nl.torquelink.presentation.screens.generic.BaseCompactScreenLayout
 import nl.torquelink.presentation.screens.generic.components.AdmobBanner
 import nl.torquelink.presentation.theme.TorqueLinkTheme
@@ -20,7 +24,7 @@ import nl.torquelink.presentation.theme.TorqueLinkTheme
 fun GroupOverviewScreen(
     state: GroupOverviewScreenState,
     onEvent: (GroupOverviewScreenEvents) -> Unit,
-    windowSizeClass: WindowWidthSizeClass,
+    windowSize: WindowSize = getCurrentWindowSize(),
     snackBarHostState: SnackbarHostState,
     modifier: Modifier = Modifier
 ) {
