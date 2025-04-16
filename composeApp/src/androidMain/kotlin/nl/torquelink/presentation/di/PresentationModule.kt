@@ -1,7 +1,8 @@
 package nl.torquelink.presentation.di
 
 import nl.torquelink.presentation.navigation.di.CommonNavigationModule
-import nl.torquelink.presentation.group.overview.GroupOverviewScreenViewModel
+import nl.torquelink.presentation.screens.group.information.GroupInformationScreenViewModel
+import nl.torquelink.presentation.screens.group.overview.GroupOverviewScreenViewModel
 import nl.torquelink.presentation.screens.login.LoginScreenViewModel
 import nl.torquelink.presentation.screens.profile.create.ProfileCreateScreenViewModel
 import org.koin.core.module.dsl.viewModelOf
@@ -24,4 +25,5 @@ actual val PresentationModule = module {
 
     // Groups
     viewModelOf(::GroupOverviewScreenViewModel)
+    viewModelOf(::GroupInformationScreenViewModel)
 }

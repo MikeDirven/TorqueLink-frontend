@@ -27,4 +27,17 @@ object GroupsScope {
             header("Torquelink-Access", token)
         }.decode<Pageable<Groups.GroupDto>>()
     }
+
+    suspend fun getGroupDetails(
+        token: String,
+        groupId: Long
+    ) : Result<Groups.GroupWithDetailsDto> {
+        return httpClient.get(
+            TorqueLinkGroupRoutingV1.Groups.ById(
+                groupId = groupId
+            )
+        ) {
+            header("Torquelink-Access", token)
+        }.decode<Groups.GroupWithDetailsDto>()
+    }
 }

@@ -1,4 +1,4 @@
-package nl.torquelink.presentation.group.overview
+package nl.torquelink.presentation.screens.group.overview
 
 import nl.torquelink.shared.models.group.Groups
 import nl.torquelink.shared.models.profile.UserProfiles

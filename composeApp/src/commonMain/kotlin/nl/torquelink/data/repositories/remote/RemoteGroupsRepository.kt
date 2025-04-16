@@ -32,4 +32,20 @@ class RemoteGroupsRepository(
             return ErrorResult.Error(e)
         }
     }
+
+    override suspend fun getGroupDetails(
+        groupId: Long
+    ): Result<Groups.GroupWithDetailsDto> {
+        val accessToken = preferencesDataSource.getAccessToken()
+            ?: return ErrorResult.Error(Exception("No access token found"))
+
+        return try {
+            torqueLinkApi.groupsApi.getGroupDetails(
+                accessToken,
+                groupId
+            )
+        } catch(e: Exception) {
+            return ErrorResult.Error(e)
+        }
+    }
 }

@@ -24,5 +24,10 @@ sealed interface Destinations : Destination {
     sealed interface Groups : Destinations {
         @Serializable
         data object Overview : Groups
+
+        @Serializable
+        data class Information(
+            val groupId: Long
+        ) : Groups
     }
 }

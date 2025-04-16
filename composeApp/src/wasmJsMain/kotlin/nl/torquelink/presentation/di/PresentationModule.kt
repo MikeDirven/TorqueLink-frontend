@@ -1,7 +1,8 @@
 package nl.torquelink.presentation.di
 
-import nl.torquelink.presentation.group.overview.GroupOverviewScreenViewModel
+import nl.torquelink.presentation.screens.group.overview.GroupOverviewScreenViewModel
 import nl.torquelink.presentation.navigation.di.CommonNavigationModule
+import nl.torquelink.presentation.screens.group.information.GroupInformationScreenViewModel
 import nl.torquelink.presentation.screens.login.LoginScreenViewModel
 import nl.torquelink.presentation.screens.profile.create.ProfileCreateScreenViewModel
 import nl.torquelink.presentation.screens.register.RegisterScreenViewModel
@@ -21,5 +22,8 @@ actual val PresentationModule: Module = module {
     singleOf(::ResetPasswordScreenViewModel)
     singleOf(::ProfileCreateScreenViewModel)
     singleOf(::TimeLineScreenViewModel)
+
+    // Groups
     singleOf(::GroupOverviewScreenViewModel)
+    singleOf(::GroupInformationScreenViewModel)
 }

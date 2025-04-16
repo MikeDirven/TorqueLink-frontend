@@ -1,4 +1,4 @@
-package nl.torquelink.presentation.group.overview
+package nl.torquelink.presentation.screens.group.overview
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -73,6 +73,15 @@ class GroupOverviewScreenViewModel(
             is GroupOverviewScreenEvents.OnTabSwitch -> {
                 viewModelScope.launch {
                     navigator.navigate(event.tab.destination)
+                }
+            }
+            is GroupOverviewScreenEvents.OnGroupItemClicked -> {
+                viewModelScope.launch {
+                    navigator.navigate(
+                        Destinations.Groups.Information(
+                            event.groupId
+                        )
+                    )
                 }
             }
         }

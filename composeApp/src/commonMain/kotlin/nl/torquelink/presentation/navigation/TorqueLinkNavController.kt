@@ -27,7 +27,6 @@ fun TorqueLinkNavController(
     snackBarController: SnackBarController,
     builder: NavGraphBuilder.(SnackbarHostState) -> Unit
 ) {
-
     ObserveAsEvents(flow = navigator.navigationActions) { action ->
         when (action) {
             is NavigationAction.Navigate -> navController.navigate(

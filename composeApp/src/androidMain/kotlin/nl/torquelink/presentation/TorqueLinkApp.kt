@@ -17,6 +17,7 @@ import nl.torquelink.domain.utils.firebase.FirebaseUtil
 import nl.torquelink.presentation.navigation.Destinations
 import nl.torquelink.presentation.navigation.TorqueLinkNavController
 import nl.torquelink.presentation.navigation.navigator.Navigator
+import nl.torquelink.presentation.screens.group.information.groupInformationScreenNavGraph
 import nl.torquelink.presentation.screens.group.overview.groupOverviewScreenNavGraph
 import nl.torquelink.presentation.screens.login.loginScreenNavGraph
 import nl.torquelink.presentation.screens.profile.create.profileCreateScreenNavGraph
@@ -54,6 +55,7 @@ fun TorqueLinkApp(
 
         timeLineScreenNavGraph(snackBarHostState = snackBarState)
 
-        groupOverviewScreenNavGraph(windowSizeClass = windowSizeClass, snackBarHostState = snackBarState)
+        groupOverviewScreenNavGraph(snackBarHostState = snackBarState)
+        groupInformationScreenNavGraph(snackBarHostState = snackBarState)
     }
 }

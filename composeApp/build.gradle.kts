@@ -37,7 +37,7 @@ kotlin {
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        moduleName = "composeApp"
+        outputModuleName = "composeApp"
         browser {
             val rootDirPath = project.rootDir.path
             val projectDirPath = project.projectDir.path
@@ -174,6 +174,7 @@ android {
     packaging {
         resources {
             merges += "/META-INF/{LICENSE-notice.md,INDEX.LIST,LGPL-3.0.txt,ASL-2.0.txt,AL2.0,LGPL2.1,DEPENDENCIES,LICENSE.md,NOTICE.md}"
+            merges += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
             excludes += "draftv4/schema"
             excludes += "draftv3/schema"
         }

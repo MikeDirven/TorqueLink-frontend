@@ -13,4 +13,8 @@ interface GroupsRepository {
         limit: Int = 10,
         filters: Filters? = null
     ): Result<Pageable<Groups.GroupDto>>
+
+    suspend fun getGroupDetails(
+        groupId: Long
+    ): Result<Groups.GroupWithDetailsDto>
 }
