@@ -4,5 +4,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 actual fun getCurrentWindowSize() : WindowSize {
-    TODO()
+    return WindowSize.Small(0,0)
 }

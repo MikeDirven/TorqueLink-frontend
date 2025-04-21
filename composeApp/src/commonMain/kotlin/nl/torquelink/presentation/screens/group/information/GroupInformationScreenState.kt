@@ -8,7 +8,7 @@ sealed interface GroupInformationScreenState {
 
     data class ScreenStateWithData(
         override val profile: UserProfiles.UserProfileWithSettingsDto? = null,
-        val groupData: Groups.GroupWithDetailsDto? = null
+        val groupData: Groups.GroupWithDetailsDto
     ) : GroupInformationScreenState
 
     data class LoadingScreenState(

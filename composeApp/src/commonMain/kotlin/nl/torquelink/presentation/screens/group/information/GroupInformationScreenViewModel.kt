@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nl.torquelink.data.network.result.ErrorResult
 import nl.torquelink.data.network.result.SuccessResult
+import nl.torquelink.domain.Pagination
 import nl.torquelink.domain.exceptions.localMessage
 import nl.torquelink.domain.repositories.GroupsRepository
 import nl.torquelink.domain.repositories.PreferencesRepository

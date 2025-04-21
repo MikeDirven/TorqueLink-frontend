@@ -1,13 +1,16 @@
 package nl.torquelink.presentation.screens.timeline
 
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import nl.torquelink.domain.enums.BaseScreenTabs
 import nl.torquelink.presentation.screens.generic.BaseCompactScreenLayout
-import nl.torquelink.presentation.theme.TorqueLinkTheme
 
 @Composable
 fun TimeLineScreen(
@@ -23,8 +26,13 @@ fun TimeLineScreen(
         onTabSwitch = {
             onEvent(TimeLineScreenEvents.OnTabSwitch(it))
         },
-        profileAvatar = state.profile?.let {
-            { AsyncImage(it.avatar, "") }
+        profileAvatar = state.profile?.avatar?.let {
+            { AsyncImage(
+                modifier = Modifier.size(24.0.dp).clip(IconButtonDefaults.filledShape),
+                model = it,
+                contentDescription = "",
+                contentScale = ContentScale.FillBounds
+            ) }
         }
     ) {
 

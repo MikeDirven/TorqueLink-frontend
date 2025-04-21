@@ -2,6 +2,7 @@ package nl.torquelink.presentation.screens.group.information
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -18,6 +19,14 @@ fun NavGraphBuilder.groupInformationScreenNavGraph(
         val data = it.toRoute<Destinations.Groups.Information>()
         val viewModel: GroupInformationScreenViewModel = koinViewModel()
         val viewModelState by viewModel.state.collectAsStateWithLifecycle()
+
+        LaunchedEffect(Unit) {
+            viewModel.dispatch(
+                GroupInformationScreenEvents.GetGroupDetails(
+                    data.groupId
+                )
+            )
+        }
 
         GroupInformationScreen(
             state = viewModelState,

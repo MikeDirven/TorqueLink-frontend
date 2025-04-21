@@ -21,13 +21,13 @@ fun NavGraphBuilder.groupInformationScreenNavGraph(
         val viewModel: GroupInformationScreenViewModel = koinInject<GroupInformationScreenViewModel>()
         val viewModelState by viewModel.state.collectAsStateWithLifecycle()
 
-//        LaunchedEffect(Unit) {
-//            viewModel.dispatch(
-//                GroupInformationScreenEvents.GetGroupDetails(
-//                    data.groupId
-//                )
-//            )
-//        }
+        LaunchedEffect(Unit) {
+            viewModel.dispatch(
+                GroupInformationScreenEvents.GetGroupDetails(
+                    data.groupId
+                )
+            )
+        }
 
         GroupInformationScreen(
             state = viewModelState,

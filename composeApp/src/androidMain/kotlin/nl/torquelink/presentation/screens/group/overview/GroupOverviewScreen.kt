@@ -2,23 +2,33 @@ package nl.torquelink.presentation.screens.group.overview
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import nl.torquelink.domain.Pagination
 import nl.torquelink.domain.enums.BaseScreenTabs
 import nl.torquelink.domain.window.WindowSize
 import nl.torquelink.domain.window.getCurrentWindowSize
 import nl.torquelink.presentation.screens.generic.BaseCompactScreenLayout
 import nl.torquelink.presentation.screens.generic.components.AdmobBanner
+import nl.torquelink.presentation.screens.generic.components.LoadingIndicator
+import nl.torquelink.presentation.screens.generic.components.PaginatedLazyColum
 import nl.torquelink.presentation.screens.group.components.GroupListItem
 import nl.torquelink.presentation.theme.TorqueLinkTheme
 import nl.torquelink.shared.enums.group.MemberListVisibility
@@ -41,26 +51,46 @@ fun GroupOverviewScreen(
                 onTabSwitch = {
                     onEvent(GroupOverviewScreenEvents.OnTabSwitch(it))
                 },
-                profileAvatar = state.profile?.let {
-                    { AsyncImage(it.avatar, "") }
+                profileAvatar = state.profile?.avatar?.let {
+                    { AsyncImage(
+                        modifier = Modifier.size(24.0.dp).clip(IconButtonDefaults.filledShape),
+                        model = it,
+                        contentDescription = "",
+                        contentScale = ContentScale.FillBounds
+                    ) }
                 }
             ) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize().padding(8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top)
-                ) {
-                    items(state.groupsData) { item ->
-                        GroupListItem(
-                            group = item,
-                            onClick = {
-                                onEvent(GroupOverviewScreenEvents.OnGroupItemClicked(item.id))
+                when(state){
+                    is GroupOverviewScreenState.LoadingScreenState -> {
+                        LoadingIndicator()
+                    }
+                    is GroupOverviewScreenState.ErrorScreenState -> {
+
+                    }
+                    is GroupOverviewScreenState.ScreenStateWithData -> {
+                        PaginatedLazyColum(
+                            modifier = Modifier.fillMaxSize().padding(8.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top),
+                            items = state.groupsData,
+                            loadNextPage = {
+                                onEvent(GroupOverviewScreenEvents.LoadNextPage)
+                            },
+                            isLoading = false,
+                            hasMore = state.pagination.hasNext,
+                            advertisement = {
+                                AdmobBanner()
                             }
-                        )
+                        ) { index, item ->
+                            GroupListItem(
+                                group = item,
+                                onClick = {
+                                    onEvent(GroupOverviewScreenEvents.OnGroupItemClicked(item.id))
+                                }
+                            )
+                        }
                     }
                 }
-
-                AdmobBanner()
             }
         }
         else -> {}
@@ -74,7 +104,12 @@ fun GroupOverviewScreenPreview() {
     TorqueLinkTheme {
         GroupOverviewScreen(
             windowSize = WindowSize.Small(0,0),
-            state = GroupOverviewScreenState(
+            state = GroupOverviewScreenState.ScreenStateWithData(
+                pagination = Pagination(
+                    1,
+                    10,
+                    true
+                ),
                 groupsData = listOf(
                     Groups.GroupDto(
                         id = 4356,
@@ -108,7 +143,12 @@ fun TimeLineScreenTabletPreview() {
     TorqueLinkTheme {
         GroupOverviewScreen(
             windowSize = WindowSize.Medium(0,0),
-            state = GroupOverviewScreenState(
+            state = GroupOverviewScreenState.ScreenStateWithData(
+                pagination = Pagination(
+                    1,
+                    10,
+                    true
+                ),
                 groupsData = listOf(
                     Groups.GroupDto(
                         id = 4356,
